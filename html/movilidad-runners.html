@@ -4,42 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Movilidad & Flexibilidad — Runners</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/theme.css">
+<script>
+  /* Set the theme before first paint so dark mode never flashes white. */
+  (function(){
+    try{
+      var stored = localStorage.getItem('plans-theme');
+      var dark = stored ? stored === 'dark'
+                        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(dark){ document.documentElement.classList.add('dark'); }
+    }catch(e){}
+  })();
+</script>
 <style>
+  /* Only the tokens this page adds on top of the shared theme. The names it
+     shares with theme.css (--bg, --border, --muted) are deliberately NOT
+     redefined: overriding them here would outrank the .dark block and
+     freeze the page in one palette. */
   :root {
-    --bg: #f5f0e8;
-    --cream: #ede8dc;
-    --dark: #1a1612;
-    --brown: #3d2b1f;
-    --accent: #c17f3a;
-    --accent2: #7a9e7e;
-    --muted: #8a7d6e;
-    --border: #d4c9b5;
-    --card: #ffffff;
-    --pre: #e8f0e9;
-    --post: #fef3e2;
-    --rest: #e8edf5;
+    --cream: var(--surface-2);
+    --dark: var(--text);
+    --brown: var(--text-soft);
+    --accent: var(--a-mobility);
+    --accent2: var(--a-nutrition);
+    --card: var(--surface);
+    /* Routine tints, derived from the accents so they follow the theme */
+    --pre:  color-mix(in srgb, var(--a-nutrition) 10%, var(--bg));
+    --post: color-mix(in srgb, #ea580c 10%, var(--bg));
+    --rest: color-mix(in srgb, var(--primary) 10%, var(--bg));
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--dark);
-    font-family: 'Spectral', Georgia, serif;
-    font-weight: 300;
-    min-height: 100vh;
-  }
-
-  /* Texture overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-  }
+  body { min-height: 100vh; }
 
   .container {
     max-width: 780px;
@@ -60,12 +58,13 @@
     text-transform: uppercase;
     color: var(--accent);
     margin-bottom: 16px;
-    font-family: 'Spectral', serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
   }
 
   .header h1 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
     font-size: clamp(38px, 8vw, 64px);
     line-height: 1.05;
     color: var(--dark);
@@ -120,15 +119,18 @@
     font-weight: 400;
     padding: 5px 12px;
     border-radius: 20px;
-    font-family: 'Spectral', serif;
+    font-family: 'Inter', sans-serif;
   }
 
-  .tag-pre { background: var(--pre); color: #3a6b40; }
-  .tag-post { background: var(--post); color: #a0600a; }
-  .tag-rest { background: var(--rest); color: #3a5080; }
+  .tag-pre { background: var(--pre); color: var(--a-nutrition); }
+  .tag-post { background: var(--post); color: #ea580c; }
+  .tag-rest { background: var(--rest); color: var(--primary); }
+  .dark .tag-post { color: #fb923c; }
 
   .section-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: -.01em;
     font-size: 24px;
     color: var(--dark);
   }
@@ -160,14 +162,15 @@
   }
 
   .ex-card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    box-shadow: var(--shadow);
     transform: translateY(-1px);
   }
 
   .ex-left {}
 
   .ex-name {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     font-size: 17px;
     color: var(--dark);
     margin-bottom: 5px;
@@ -178,7 +181,7 @@
     color: var(--muted);
     font-style: italic;
     margin-bottom: 8px;
-    font-family: 'Spectral', serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .ex-desc {
@@ -193,11 +196,11 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--accent2);
-    background: rgba(122,158,126,0.12);
+    background: color-mix(in srgb, var(--accent2) 14%, transparent);
     padding: 2px 8px;
     border-radius: 10px;
     margin-top: 8px;
-    font-family: 'Spectral', serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .ex-right {
@@ -206,7 +209,8 @@
   }
 
   .ex-time {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 22px;
     color: var(--accent);
     line-height: 1;
@@ -218,7 +222,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-top: 3px;
-    font-family: 'Spectral', serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .ex-reps {
@@ -243,7 +247,7 @@
   }
 
   .total-badge strong {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 18px;
     color: var(--dark);
     font-weight: 700;
@@ -261,7 +265,8 @@
   }
 
   .tips-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 16px;
     margin-bottom: 14px;
     color: var(--brown);
@@ -295,7 +300,8 @@
   }
 
   .schedule-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
     font-size: 20px;
     margin-bottom: 16px;
     color: var(--dark);
@@ -319,7 +325,7 @@
   }
 
   .schedule-day {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     color: var(--dark);
   }
@@ -671,5 +677,6 @@
   </div>
 
 </div>
+<script src="./assets/theme.js"></script>
 </body>
 </html>

@@ -4,178 +4,236 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Plans — José Chaparro</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="Planes de entrenamiento, alimentación y movilidad de José Chaparro. Documentos vivos que se actualizan conforme avanzo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/theme.css">
+<script>
+  /* Set the theme before first paint so dark mode never flashes white. */
+  (function(){
+    try{
+      var stored = localStorage.getItem('plans-theme');
+      var dark = stored ? stored === 'dark'
+                        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(dark){ document.documentElement.classList.add('dark'); }
+    }catch(e){}
+  })();
+</script>
 <style>
-  :root{
-    --ink:#08090b;--panel:#101317;--panel2:#161a20;--line:#212831;
-    --txt:#eef2f5;--dim:#7b8792;--dim2:#48525c;
-    --lime:#c6f24e;--ice:#5cc8ff;--heat:#ff7a45;--rose:#ff5c8a;--violet:#a78bfa;
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--ink);color:var(--txt);
-    font-family:'Archivo',system-ui,sans-serif;font-weight:300;
-    overflow-x:hidden;
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 18px;
   }
-  body::before{
-    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(760px 420px at 85% -10%, rgba(198,242,78,.09), transparent 62%),
-      radial-gradient(620px 420px at -8% 40%, rgba(92,200,255,.07), transparent 62%);
+  .eyebrow .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2.4s ease-in-out infinite;
   }
-  /* grain */
-  body::after{
-    content:'';position:fixed;inset:0;z-index:998;pointer-events:none;opacity:.032;
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.7)} }
+
+  .hero h1 {
+    font-size: clamp(38px, 7vw, 60px);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -.03em;
+    margin-bottom: 20px;
+  }
+  .hero p.lede {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 620px;
+    margin-bottom: 34px;
+  }
+  .hero p.lede b { color: var(--text-soft); font-weight: 600; }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 40px; }
+  .stat .n {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.02em;
+  }
+  .stat .l {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted-2);
+    margin-top: 6px;
   }
 
-  .wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 22px 110px}
-
-  /* ---------- HERO ---------- */
-  .hero{min-height:82vh;display:flex;flex-direction:column;justify-content:center;padding:70px 0 40px}
-  .kicker{
-    font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime);
-    font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:12px;
+  /* ---------- Filters ---------- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 26px;
   }
-  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2.4s ease-in-out infinite}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-  .kicker span.line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
-
-  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(46px,11vw,104px);line-height:.88;letter-spacing:-.03em;margin-bottom:26px}
-  h1 .l{display:block;overflow:hidden}
-  h1 .l i{display:block;font-style:normal}
-  h1 .out{color:transparent;-webkit-text-stroke:1.8px var(--lime)}
-
-  .sub{font-size:15px;color:var(--dim);line-height:1.8;max-width:520px;margin-bottom:34px}
-  .sub b{color:var(--txt);font-weight:500}
-
-  .hstats{display:flex;gap:34px;flex-wrap:wrap}
-  .hs .n{font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1;color:var(--lime)}
-  .hs .l{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin-top:5px;font-weight:500}
-
-  .scroll-hint{
-    margin-top:56px;display:flex;align-items:center;gap:10px;
-    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim2);
+  .f {
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color .2s, border-color .2s, background-color .2s;
   }
-  .scroll-hint .arrow{
-    width:1px;height:26px;background:linear-gradient(180deg,var(--dim2),transparent);
-    animation:drop 1.8s ease-in-out infinite;
+  .f:hover { color: var(--primary); border-color: var(--primary); }
+  .f.on {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    font-weight: 600;
   }
-  @keyframes drop{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(7px);opacity:.35}}
+  .dark .f.on { color: #111827; }
 
-  /* ---------- FILTERS ---------- */
-  .filters{
-    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;
-    position:sticky;top:0;z-index:20;
-    padding:18px 0;background:linear-gradient(180deg,var(--ink) 62%,transparent);
+  /* ---------- Cards ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+    gap: 20px;
   }
-  .f{
-    font-size:11.5px;letter-spacing:.06em;padding:8px 15px;border-radius:22px;
-    border:1px solid var(--line);background:var(--panel);color:var(--dim);
-    cursor:pointer;transition:all .22s;font-family:inherit;
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-sm);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
-  .f:hover{border-color:#2f3a44;color:var(--txt)}
-  .f.on{background:var(--lime);border-color:var(--lime);color:#08090b;font-weight:500}
-
-  /* ---------- GRID ---------- */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-
-  .card{
-    position:relative;background:var(--panel);border:1px solid var(--line);
-    border-radius:13px;overflow:hidden;text-decoration:none;color:inherit;
-    display:flex;flex-direction:column;min-height:250px;
-    transition:border-color .3s;
-    will-change:transform;
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
   }
-  .card::before{
-    content:'';position:absolute;inset:0;opacity:0;transition:opacity .35s;
-    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.055), transparent 42%);
-    pointer-events:none;z-index:2;
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
   }
-  .card:hover::before{opacity:1}
-  .card:hover{border-color:#303a45}
 
-  .card-accent{height:3px;width:100%;transform-origin:left;transform:scaleX(0)}
-
-  .card-top{padding:22px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-  .cat{
-    font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
-    padding:4px 9px;border-radius:4px;
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 24px 24px 0;
   }
-  .num{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.08em}
-
-  .card-body{padding:16px 22px 22px;flex:1;display:flex;flex-direction:column}
-  .card h3{font-family:'Archivo Black',sans-serif;font-size:21px;line-height:1.12;letter-spacing:-.015em;margin-bottom:9px}
-  .card p{font-size:12.5px;color:var(--dim);line-height:1.68;flex:1}
-
-  .card-foot{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    margin-top:18px;padding-top:15px;border-top:1px solid var(--line);
+  .cat {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding: 5px 11px;
+    border-radius: 999px;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
   }
-  .meta{display:flex;gap:14px;font-size:10.5px;color:var(--dim2)}
-  .meta b{color:var(--dim);font-weight:400}
-  .go{
-    display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.1em;
-    text-transform:uppercase;font-weight:500;transition:gap .25s;
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted-2);
   }
-  .card:hover .go{gap:12px}
-
-  .status{
-    position:absolute;top:22px;right:22px;z-index:3;
-    display:flex;align-items:center;gap:6px;font-size:9.5px;
-    letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);
+  .status .sd { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .status.live { color: var(--accent); }
+  .status.live .sd { animation: ring 2s infinite; }
+  @keyframes ring {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    70%  { box-shadow: 0 0 0 7px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
   }
-  .status .sd{width:5px;height:5px;border-radius:50%;background:var(--dim2)}
-  .status.live .sd{background:var(--lime);box-shadow:0 0 0 0 rgba(198,242,78,.5);animation:ring 2s infinite}
-  .status.live{color:var(--lime)}
-  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(198,242,78,.45)}70%{box-shadow:0 0 0 7px rgba(198,242,78,0)}100%{box-shadow:0 0 0 0 rgba(198,242,78,0)}}
 
-  /* section head */
-  .sh{display:flex;align-items:baseline;gap:13px;margin:64px 0 8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-  .sh-n{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.1em}
-  .sh-t{font-family:'Archivo Black',sans-serif;font-size:20px}
-  .sh-c{margin-left:auto;font-size:11px;color:var(--dim2)}
-
-  /* footer */
-  footer{
-    margin-top:80px;padding-top:26px;border-top:1px solid var(--line);
-    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
-    font-size:11.5px;color:var(--dim2);
+  .card-body { display: flex; flex-direction: column; flex: 1; padding: 14px 24px 24px; }
+  .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin-bottom: 9px;
   }
-  footer b{color:var(--dim);font-weight:400}
+  .card p { font-size: 14px; color: var(--muted); flex: 1; }
 
-  @media(max-width:600px){
-    .hero{min-height:76vh}
-    .grid{grid-template-columns:1fr}
-    .hstats{gap:24px}
+  .card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
   }
-  @media(prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
+  .meta { display: flex; gap: 18px; font-size: 12.5px; color: var(--muted-2); }
+  .meta b { color: var(--text-soft); font-weight: 600; }
+  .go {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--accent);
+    transition: gap .2s;
+  }
+  .card:hover .go { gap: 12px; }
+
+  .empty {
+    grid-column: 1 / -1;
+    padding: 48px 0;
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 14.5px;
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 0 40px; }
+    .grid { grid-template-columns: 1fr; }
+    .stats { gap: 28px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- HERO -->
+<main class="wrap">
+
   <section class="hero">
-    <div class="kicker" data-fade><span class="dot"></span> josechaparro.com/plans <span class="line"></span></div>
-    <h1>
-      <span class="l"><i data-line>TODOS MIS</i></span>
-      <span class="l"><i data-line class="out">PLANES</i></span>
-    </h1>
-    <p class="sub" data-fade>Entrenamiento, alimentación, movilidad. Documentos vivos que se actualizan conforme avanzo — no capturas de un momento. <b>Última revisión: 9 de agosto de 2026.</b></p>
-    <div class="hstats">
-      <div class="hs" data-fade><div class="n" data-count="4">0</div><div class="l">Documentos</div></div>
-      <div class="hs" data-fade><div class="n" data-count="28">0</div><div class="l">Semanas planeadas</div></div>
-      <div class="hs" data-fade><div class="n" data-count="87">0</div><div class="l">Sesiones totales</div></div>
+    <div class="eyebrow"><span class="dot"></span> plans.josechaparro.com</div>
+    <h1>Todos mis <span class="gradient-text">planes</span></h1>
+    <p class="lede">
+      Entrenamiento, alimentación y movilidad. Documentos vivos que se actualizan
+      conforme avanzo — no capturas de un momento.
+      <b>Última revisión: 9 de agosto de 2026.</b>
+    </p>
+    <div class="stats">
+      <div class="stat"><div class="n gradient-text" data-count="4">0</div><div class="l">Documentos</div></div>
+      <div class="stat"><div class="n gradient-text" data-count="28">0</div><div class="l">Semanas planeadas</div></div>
+      <div class="stat"><div class="n gradient-text" data-count="87">0</div><div class="l">Sesiones totales</div></div>
     </div>
-    <div class="scroll-hint" data-fade>Scroll <span class="arrow"></span></div>
   </section>
 
-  <!-- FILTERS -->
-  <div class="filters" data-fade>
+  <div class="filters">
     <button class="f on" data-filter="all">Todo</button>
     <button class="f" data-filter="activo">Activo ahora</button>
     <button class="f" data-filter="entrenamiento">Entrenamiento</button>
@@ -183,196 +241,123 @@
     <button class="f" data-filter="futuro">Programado</button>
   </div>
 
-  <!-- GRID -->
-  <div class="grid" id="grid">
+  <div class="grid" id="grid"></div>
 
-    <a class="card" href="./plan-fuerza-jose.html" data-tags="activo entrenamiento" data-accent="#c6f24e">
-      <div class="card-accent" style="background:linear-gradient(90deg,#c6f24e,transparent)"></div>
-      <div class="status live"><span class="sd"></span> En curso</div>
-      <div class="card-top">
-        <span class="cat" style="background:rgba(198,242,78,.12);color:#c6f24e">Fuerza</span>
-      </div>
-      <div class="card-body">
-        <h3>Fuerza sin equipo</h3>
-        <p>Ocho semanas de peso corporal en casa para construir base antes de volver a correr. Cinco ejercicios, 30 minutos, tres días por semana.</p>
-        <div class="card-foot">
-          <div class="meta"><span><b>8</b> semanas</span><span><b>10 ago</b> → 4 oct</span></div>
-          <div class="go" style="color:#c6f24e">Abrir →</div>
-        </div>
-      </div>
-    </a>
+</main>
 
-    <a class="card" href="./plan-alimenticio-jose.html" data-tags="activo nutricion" data-accent="#ff7a45">
-      <div class="card-accent" style="background:linear-gradient(90deg,#ff7a45,transparent)"></div>
-      <div class="status live"><span class="sd"></span> En curso</div>
-      <div class="card-top">
-        <span class="cat" style="background:rgba(255,122,69,.13);color:#ff7a45">Nutrición</span>
-      </div>
-      <div class="card-body">
-        <h3>Come bien, come simple</h3>
-        <p>Plan de ~1,950 kcal construido sobre lo que ya sé cocinar. Porciones visuales sin báscula, tres comidas, opciones intercambiables.</p>
-        <div class="card-foot">
-          <div class="meta"><span><b>1,950</b> kcal/día</span><span><b>140g</b> proteína</span></div>
-          <div class="go" style="color:#ff7a45">Abrir →</div>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="./movilidad-runners.html" data-tags="activo entrenamiento" data-accent="#5cc8ff">
-      <div class="card-accent" style="background:linear-gradient(90deg,#5cc8ff,transparent)"></div>
-      <div class="status live"><span class="sd"></span> En curso</div>
-      <div class="card-top">
-        <span class="cat" style="background:rgba(92,200,255,.13);color:#5cc8ff">Movilidad</span>
-      </div>
-      <div class="card-body">
-        <h3>Movilidad & flexibilidad</h3>
-        <p>Tres rutinas separadas: dinámica antes de entrenar, estática después, y movilidad profunda para los días de descanso activo.</p>
-        <div class="card-foot">
-          <div class="meta"><span><b>16</b> ejercicios</span><span><b>8–12</b> min</span></div>
-          <div class="go" style="color:#5cc8ff">Abrir →</div>
-        </div>
-      </div>
-    </a>
-
-    <a class="card" href="./running-roadmap-v2.html" data-tags="futuro entrenamiento" data-accent="#a78bfa">
-      <div class="card-accent" style="background:linear-gradient(90deg,#a78bfa,transparent)"></div>
-      <div class="status"><span class="sd"></span> Programado</div>
-      <div class="card-top">
-        <span class="cat" style="background:rgba(167,139,250,.14);color:#a78bfa">Running</span>
-      </div>
-      <div class="card-body">
-        <h3>De cero a 5K · v2</h3>
-        <p>Roadmap corregido tras auditar la v1: fechas reales, dos semanas puente añadidas y ningún salto que viole la regla del 10%.</p>
-        <div class="card-foot">
-          <div class="meta"><span><b>20</b> semanas</span><span><b>5 oct</b> → 15 feb</span></div>
-          <div class="go" style="color:#a78bfa">Abrir →</div>
-        </div>
-      </div>
-    </a>
-
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>José Chaparro · <strong>Plans</strong></div>
+    <div><a href="https://www.josechaparro.com/">josechaparro.com</a> · Actualizado 09.08.2026</div>
   </div>
+</footer>
 
-  <footer>
-    <div>José Chaparro · <b>Plans</b></div>
-    <div>Actualizado <b>09.08.2026</b></div>
-  </footer>
-
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="./assets/theme.js"></script>
 <script>
-(function(){
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var hasGSAP = typeof gsap !== 'undefined';
+(function () {
+  'use strict';
 
-  // ---- Fallback: if GSAP fails to load, just show everything ----
-  if(!hasGSAP || reduced){
-    document.querySelectorAll('[data-line],[data-fade],.card,.card-accent').forEach(function(el){
-      el.style.opacity = 1; el.style.transform = 'none';
-    });
-    document.querySelectorAll('[data-count]').forEach(function(el){
-      el.textContent = el.getAttribute('data-count');
-    });
-    initFilters();
-    return;
+  var ACCENT_VAR = {
+    strength:  'var(--a-strength)',
+    nutrition: 'var(--a-nutrition)',
+    mobility:  'var(--a-mobility)',
+    running:   'var(--a-running)'
+  };
+
+  var grid = document.getElementById('grid');
+
+  /* Cards come from the shared catalogue in theme.js, so a new plan is
+     declared once and appears both here and in the header nav. */
+  function renderCards() {
+    grid.innerHTML = window.PlansTheme.plans.map(function (plan, i) {
+      var meta = plan.meta.map(function (m) {
+        return '<span><b>' + m.value + '</b> ' + m.label + '</span>';
+      }).join('');
+
+      return '' +
+        '<a class="card scroll-reveal" href="./' + plan.file + '"' +
+        ' data-tags="' + plan.tags.join(' ') + '"' +
+        ' style="--accent:' + ACCENT_VAR[plan.accent] + ';transition-delay:' + (i % 3) * 70 + 'ms">' +
+          '<div class="card-top">' +
+            '<span class="cat">' + plan.category + '</span>' +
+            '<span class="status' + (plan.active ? ' live' : '') + '"><span class="sd"></span>' +
+              (plan.active ? 'En curso' : 'Programado') +
+            '</span>' +
+          '</div>' +
+          '<div class="card-body">' +
+            '<h3>' + plan.title + '</h3>' +
+            '<p>' + plan.summary + '</p>' +
+            '<div class="card-foot">' +
+              '<div class="meta">' + meta + '</div>' +
+              '<span class="go">Abrir <span aria-hidden="true">→</span></span>' +
+            '</div>' +
+          '</div>' +
+        '</a>';
+    }).join('');
   }
 
-  gsap.registerPlugin(ScrollTrigger);
+  function initFilters() {
+    var buttons = document.querySelectorAll('.f');
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
 
-  // ---------- HERO ----------
-  var tl = gsap.timeline({defaults:{ease:'power3.out'}});
-
-  tl.from('[data-line]', {yPercent:105, duration:1, stagger:.09})
-    .from('.kicker', {opacity:0, y:14, duration:.7}, '-=.7')
-    .from('.sub', {opacity:0, y:18, duration:.8}, '-=.55')
-    .from('.hs', {opacity:0, y:18, duration:.7, stagger:.09}, '-=.5')
-    .from('.scroll-hint', {opacity:0, duration:.7}, '-=.35')
-    .from('.filters', {opacity:0, y:14, duration:.7}, '-=.5');
-
-  // ---------- COUNTERS ----------
-  document.querySelectorAll('[data-count]').forEach(function(el){
-    var target = +el.getAttribute('data-count');
-    var obj = {v:0};
-    gsap.to(obj, {
-      v: target, duration: 1.6, ease:'power2.out', delay:.8,
-      onUpdate: function(){ el.textContent = Math.round(obj.v); }
-    });
-  });
-
-  // ---------- CARDS ON SCROLL ----------
-  gsap.utils.toArray('.card').forEach(function(card, i){
-    gsap.from(card, {
-      opacity:0, y:44, duration:.85, ease:'power3.out',
-      scrollTrigger:{ trigger:card, start:'top 88%', once:true },
-      delay:(i % 2) * .07
-    });
-    gsap.to(card.querySelector('.card-accent'), {
-      scaleX:1, duration:1.1, ease:'power3.out',
-      scrollTrigger:{ trigger:card, start:'top 88%', once:true },
-      delay:.2 + (i % 2) * .07
-    });
-  });
-
-  // ---------- HERO PARALLAX ----------
-  gsap.to('.hero', {
-    yPercent: 9, opacity:.45, ease:'none',
-    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:.6 }
-  });
-
-  // ---------- CURSOR GLOW + TILT ----------
-  document.querySelectorAll('.card').forEach(function(card){
-    card.addEventListener('mousemove', function(e){
-      var r = card.getBoundingClientRect();
-      var x = e.clientX - r.left, y = e.clientY - r.top;
-      card.style.setProperty('--mx', x + 'px');
-      card.style.setProperty('--my', y + 'px');
-      gsap.to(card, {
-        rotateY: ((x / r.width) - .5) * 5,
-        rotateX: ((y / r.height) - .5) * -5,
-        transformPerspective: 900,
-        duration:.5, ease:'power2.out'
-      });
-    });
-    card.addEventListener('mouseleave', function(){
-      gsap.to(card, {rotateX:0, rotateY:0, duration:.6, ease:'power3.out'});
-    });
-  });
-
-  initFilters();
-
-  // ---------- FILTERS ----------
-  function initFilters(){
-    var btns = document.querySelectorAll('.f');
-    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
-
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        btns.forEach(function(b){ b.classList.remove('on'); });
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('on'); });
         btn.classList.add('on');
-        var f = btn.getAttribute('data-filter');
 
-        cards.forEach(function(card){
+        var filter = btn.getAttribute('data-filter');
+        var visible = 0;
+
+        cards.forEach(function (card) {
           var tags = card.getAttribute('data-tags') || '';
-          var show = (f === 'all') || tags.indexOf(f) !== -1;
-
-          if(!hasGSAP || reduced){
-            card.style.display = show ? '' : 'none';
-            return;
-          }
-          if(show){
-            card.style.display = '';
-            gsap.fromTo(card, {opacity:0, scale:.96, y:14},
-              {opacity:1, scale:1, y:0, duration:.45, ease:'power2.out'});
-          } else {
-            gsap.to(card, {opacity:0, scale:.96, duration:.28, ease:'power2.in',
-              onComplete:function(){ card.style.display='none'; }});
-          }
+          var show = filter === 'all' || tags.split(' ').indexOf(filter) !== -1;
+          card.style.display = show ? '' : 'none';
+          if (show) { visible++; }
         });
-        if(hasGSAP && !reduced){ setTimeout(function(){ ScrollTrigger.refresh(); }, 500); }
+
+        var empty = grid.querySelector('.empty');
+        if (!visible && !empty) {
+          grid.insertAdjacentHTML('beforeend', '<p class="empty">Nada por acá todavía.</p>');
+        } else if (visible && empty) {
+          empty.remove();
+        }
       });
     });
   }
+
+  function initCounters() {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      if (reduced) { el.textContent = target; return; }
+
+      var start = null;
+      var DURATION = 1400;
+
+      function step(now) {
+        if (start === null) { start = now; }
+        var progress = Math.min((now - start) / DURATION, 1);
+        // easeOutCubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * eased);
+        if (progress < 1) { window.requestAnimationFrame(step); }
+      }
+      window.requestAnimationFrame(step);
+    });
+  }
+
+  renderCards();
+  initFilters();
+  initCounters();
+
+  /* The cards were injected after theme.js wired its observer, so reveal
+     them here rather than leaving them stuck at opacity 0. */
+  window.requestAnimationFrame(function () {
+    grid.querySelectorAll('.scroll-reveal').forEach(function (el) {
+      el.classList.add('revealed');
+    });
+  });
 })();
 </script>
 </body>

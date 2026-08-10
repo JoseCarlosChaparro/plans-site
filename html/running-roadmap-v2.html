@@ -4,22 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Roadmap 0 a 5K — v2</title>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/theme.css">
+<script>
+  /* Set the theme before first paint so dark mode never flashes white. */
+  (function(){
+    try{
+      var stored = localStorage.getItem('plans-theme');
+      var dark = stored ? stored === 'dark'
+                        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if(dark){ document.documentElement.classList.add('dark'); }
+    }catch(e){}
+  })();
+</script>
 <style>
+  /* Legacy token names mapped onto the shared theme, so every rule below
+     inherits light/dark support without being rewritten one by one. */
   :root{
-    --ink:#08090b;--panel:#101317;--panel2:#161a20;--line:#212831;
-    --txt:#eef2f5;--dim:#7b8792;--dim2:#48525c;
-    --ice:#5cc8ff;--lime:#c6f24e;--heat:#ff7a45;--rose:#ff5c8a;
+    --ink:var(--bg);
+    --panel:var(--surface);
+    --panel2:var(--surface-2);
+    --line:var(--border);
+    --txt:var(--text);
+    --dim:var(--muted);
+    --dim2:var(--muted-2);
+    --ice:var(--a-running);
+    --lime:var(--a-nutrition);
+    --heat:#ea580c;
+    --rose:#e11d48;
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--ink);color:var(--txt);font-family:'Archivo',system-ui,sans-serif;font-weight:300;overflow-x:hidden}
-  body::before{
-    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(680px 380px at 90% -8%, rgba(92,200,255,.10), transparent 62%),
-      radial-gradient(560px 380px at -5% 45%, rgba(198,242,78,.06), transparent 62%);
-  }
-  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:56px 22px 100px}
+  .dark{ --heat:#fb923c; --rose:#fb7185; }
+
+  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:48px 22px 100px}
 
   .rv{opacity:0;transform:translateY(20px);animation:rv .7s cubic-bezier(.2,.7,.3,1) forwards}
   @keyframes rv{to{opacity:1;transform:none}}
@@ -28,8 +46,8 @@
 
   .eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ice);font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:10px}
   .eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
-  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(40px,9.5vw,74px);line-height:.92;letter-spacing:-.02em;margin-bottom:18px}
-  h1 .out{color:transparent;-webkit-text-stroke:1.6px var(--ice)}
+  h1{font-family:'Inter',sans-serif;font-weight:800;font-size:clamp(40px,9.5vw,74px);line-height:.92;letter-spacing:-.02em;margin-bottom:18px}
+  h1 .out{background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
   .lede{font-size:14.5px;color:var(--dim);line-height:1.75;max-width:580px}
   .lede b{color:var(--txt);font-weight:500}
 
@@ -38,7 +56,7 @@
     margin:30px 0 44px;background:var(--panel);border:1px solid var(--line);
     border-left:3px solid var(--heat);border-radius:9px;padding:20px 22px;
   }
-  .audit h4{font-family:'Archivo Black',sans-serif;font-size:13px;margin-bottom:13px;color:var(--heat)}
+  .audit h4{font-family:'Inter',sans-serif;font-weight:800;font-size:13px;margin-bottom:13px;color:var(--heat)}
   .audit ul{list-style:none;display:grid;gap:10px}
   .audit li{font-size:12.5px;color:var(--dim);line-height:1.65;padding-left:20px;position:relative}
   .audit li::before{content:'✕';position:absolute;left:0;color:var(--heat);font-size:11px;top:1px}
@@ -51,13 +69,13 @@
 
   .sec{margin-bottom:46px}
   .sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;padding-bottom:11px;border-bottom:1px solid var(--line)}
-  .sec-n{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.1em}
-  .sec-t{font-family:'Archivo Black',sans-serif;font-size:20px}
+  .sec-n{font-family:'Inter',sans-serif;font-weight:800;font-size:11px;color:var(--dim2);letter-spacing:.1em}
+  .sec-t{font-family:'Inter',sans-serif;font-weight:800;font-size:20px}
   .sec-b{margin-left:auto;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:500}
-  .b1{background:rgba(92,200,255,.13);color:var(--ice)}
-  .b2{background:rgba(198,242,78,.12);color:var(--lime)}
-  .b3{background:rgba(255,122,69,.14);color:var(--heat)}
-  .b4{background:rgba(255,92,138,.14);color:var(--rose)}
+  .b1{background:color-mix(in srgb,var(--ice) 14%,transparent);color:var(--ice)}
+  .b2{background:color-mix(in srgb,var(--lime) 14%,transparent);color:var(--lime)}
+  .b3{background:color-mix(in srgb,var(--heat) 14%,transparent);color:var(--heat)}
+  .b4{background:color-mix(in srgb,var(--rose) 14%,transparent);color:var(--rose)}
   .sec-s{font-size:12.5px;color:var(--dim);margin:14px 0 16px;line-height:1.65}
 
   .wks{display:grid;gap:8px}
@@ -66,37 +84,37 @@
     background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 17px;
     transition:border-color .22s,transform .22s;
   }
-  .w:hover{border-color:#2c353f;transform:translateX(3px)}
-  .w.mile{border-color:rgba(198,242,78,.3);background:rgba(198,242,78,.045)}
-  .w-l{font-family:'Archivo Black',sans-serif;font-size:11.5px;color:var(--dim2);letter-spacing:.06em;line-height:1.5}
-  .w-l small{display:block;font-family:'Archivo',sans-serif;font-weight:300;font-size:10px;color:var(--dim2);margin-top:2px}
+  .w:hover{border-color:var(--border-strong);box-shadow:var(--shadow);transform:translateX(3px)}
+  .w.mile{border-color:color-mix(in srgb,var(--lime) 40%,transparent);background:color-mix(in srgb,var(--lime) 7%,transparent)}
+  .w-l{font-family:'Inter',sans-serif;font-weight:800;font-size:11.5px;color:var(--dim2);letter-spacing:.06em;line-height:1.5}
+  .w-l small{display:block;font-family:'Inter',sans-serif;font-weight:400;font-size:10px;color:var(--dim2);margin-top:2px}
   .w.mile .w-l{color:var(--lime)}
   .w-s{font-size:13px;line-height:1.5}
   .w-d{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.5}
   .tag{display:inline-block;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-right:7px;vertical-align:middle;font-weight:500}
-  .t-mix{background:rgba(255,122,69,.15);color:var(--heat)}
-  .t-int{background:rgba(198,242,78,.12);color:var(--lime)}
-  .t-con{background:rgba(92,200,255,.14);color:var(--ice)}
+  .t-mix{background:color-mix(in srgb,var(--heat) 15%,transparent);color:var(--heat)}
+  .t-int{background:color-mix(in srgb,var(--lime) 15%,transparent);color:var(--lime)}
+  .t-con{background:color-mix(in srgb,var(--ice) 15%,transparent);color:var(--ice)}
   .bar{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
   .bt{width:88px;height:4px;background:var(--line);border-radius:3px;overflow:hidden}
   .bf{height:100%;border-radius:3px;transform-origin:left;transform:scaleX(0);animation:grow 1s .4s cubic-bezier(.2,.7,.3,1) forwards}
   @keyframes grow{to{transform:scaleX(1)}}
   .bl{font-size:10px;color:var(--dim2);letter-spacing:.04em}
 
-  .goal{margin-top:44px;border-radius:12px;padding:30px 28px;background:linear-gradient(135deg,var(--ice),#2f9fd6);color:#06080a;position:relative;overflow:hidden}
+  .goal{margin-top:44px;border-radius:12px;padding:30px 28px;background:var(--gradient);color:#fff;position:relative;overflow:hidden}
   .goal::before{content:'';position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.3),transparent 30%);animation:spin 9s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .goal>*{position:relative}
   .goal .k{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.6;margin-bottom:8px;font-weight:600}
-  .goal h3{font-family:'Archivo Black',sans-serif;font-size:32px;line-height:1.03;margin-bottom:10px}
+  .goal h3{font-family:'Inter',sans-serif;font-weight:800;font-size:32px;line-height:1.03;margin-bottom:10px}
   .goal p{font-size:13px;opacity:.72;line-height:1.65;max-width:540px}
   .gstats{display:flex;gap:26px;margin-top:20px;flex-wrap:wrap}
-  .gs .n{font-family:'Archivo Black',sans-serif;font-size:26px;line-height:1}
+  .gs .n{font-family:'Inter',sans-serif;font-weight:800;font-size:26px;line-height:1}
   .gs .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-top:3px;font-weight:600}
 
   .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin-top:40px}
   .r{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:17px;transition:border-color .22s}
-  .r:hover{border-color:#2c353f}
+  .r:hover{border-color:var(--border-strong);box-shadow:var(--shadow)}
   .r-i{font-size:19px;margin-bottom:8px}
   .r-t{font-size:12.5px;font-weight:500;margin-bottom:5px}
   .r-x{font-size:11.5px;color:var(--dim);line-height:1.6}
@@ -258,5 +276,6 @@
   </div>
 
 </div>
+<script src="./assets/theme.js"></script>
 </body>
 </html>

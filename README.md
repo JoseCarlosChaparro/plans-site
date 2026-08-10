@@ -3,8 +3,8 @@
 Galería estática de planes de entrenamiento y nutrición, servida en
 **https://plans.josechaparro.com**.
 
-Cinco HTML sin build step ni dependencias de servidor. `index.html` carga GSAP
-desde CDN; el resto es autocontenido.
+Cinco HTML sin build step ni dependencias de servidor. La única carga externa
+es la fuente Inter desde Google Fonts; todo lo demás es local.
 
 ---
 
@@ -81,60 +81,92 @@ ssh dokploy 'cd ~/stacks/plans && docker compose -p plans up -d'
 
 ## Añadir un plan nuevo a la galería
 
-1. Copiá el HTML del plan a `html/`.
-2. Agregá una `<a class="card">` dentro de `<div class="grid" id="grid">` en
-   `index.html`, siguiendo el patrón:
+Hay **un solo lugar** que editar. El array `PLANS` en `html/assets/theme.js`
+alimenta a la vez las cards de la galería y el nav del header, así que un plan
+se declara una vez y aparece en los dos.
 
-```html
-<a class="card" href="./mi-plan-nuevo.html" data-tags="activo entrenamiento" data-accent="#c6f24e">
-  <div class="card-accent" style="background:linear-gradient(90deg,#c6f24e,transparent)"></div>
-  <div class="status live"><span class="sd"></span> En curso</div>
-  <div class="card-top">
-    <span class="cat" style="background:rgba(198,242,78,.12);color:#c6f24e">Fuerza</span>
-  </div>
-  <div class="card-body">
-    <h3>Título del plan</h3>
-    <p>Descripción corta, una o dos frases.</p>
-    <div class="card-foot">
-      <div class="meta"><span><b>8</b> semanas</span><span><b>10 ago</b> → 4 oct</span></div>
-      <div class="go" style="color:#c6f24e">Abrir →</div>
-    </div>
-  </div>
-</a>
+1. Copiá el HTML del plan a `html/`.
+2. Agregá una entrada al final de `PLANS`:
+
+```js
+{
+  file: 'mi-plan-nuevo.html',
+  nav: 'Yoga',                    // texto corto para el nav del header
+  title: 'Título del plan',
+  category: 'Yoga',               // chip de arriba a la izquierda en la card
+  accent: 'strength',             // ver tabla de acentos
+  tags: ['activo', 'entrenamiento'],
+  active: true,                   // true → badge "En curso"; false → "Programado"
+  summary: 'Descripción corta, una o dos frases.',
+  meta: [
+    { value: '8',      label: 'semanas' },
+    { value: '10 ago', label: '→ 4 oct' }
+  ]
+}
 ```
 
-### `data-tags` — controla los filtros
+3. Al HTML nuevo pegale la cabecera compartida (fuente Inter, `theme.css`, el
+   snippet anti-flash) y `<script src="./assets/theme.js"></script>` antes de
+   `</body>`. Copiá esas líneas de cualquier plan existente.
 
-Lista separada por espacios. Los botones de arriba filtran por estos valores:
+### `tags` — controla los filtros
+
+Los botones de la galería filtran por estos valores:
 
 | Filtro | Tag |
 |---|---|
-| Todo | *(no lleva tag, matchea siempre)* |
+| Todo | *(matchea siempre)* |
 | Activo ahora | `activo` |
 | Entrenamiento | `entrenamiento` |
 | Nutrición | `nutricion` |
 | Programado | `futuro` |
 
-Combinalos: un plan de fuerza en curso lleva `data-tags="activo entrenamiento"`.
-Un tag que no esté en la tabla simplemente no será alcanzable por ningún botón
-(si querés uno nuevo, agregá también su `<button class="f" data-filter="...">`).
+Un tag fuera de esta tabla no será alcanzable por ningún botón. Si querés uno
+nuevo, agregá también su `<button class="f" data-filter="...">` en `index.html`.
 
-### `data-accent` — controla el color
+### `accent` — controla el color
 
-Un hex. Ojo: **hay que repetirlo a mano en tres lugares más** dentro de la card,
-porque el CSS usa estilos inline y no lee el atributo:
+Un nombre, no un hex. Cada uno mapea a un token que ya trae variante clara y
+oscura, así que no hay que tocar colores a mano:
 
-- `.card-accent` → `linear-gradient(90deg,TU_HEX,transparent)`
-- `.cat` → `background:rgba(R,G,B,.12); color:TU_HEX`
-- `.go` → `color:TU_HEX`
+| `accent` | Token | Claro | Oscuro |
+|---|---|---|---|
+| `strength` | `--a-strength` | `#2563eb` | `#60a5fa` |
+| `nutrition` | `--a-nutrition` | `#0d9488` | `#2dd4bf` |
+| `mobility` | `--a-mobility` | `#0891b2` | `#22d3ee` |
+| `running` | `--a-running` | `#7c3aed` | `#a78bfa` |
 
-Acentos en uso: `#c6f24e` (lima, fuerza) · `#ff7a45` (naranja, nutrición) ·
-`#5cc8ff` (celeste, movilidad) · `#a78bfa` (violeta, futuro).
+Si necesitás uno nuevo, declaralo en `assets/theme.css` (en `:root` **y** en
+`.dark`) y sumalo al mapa `ACCENT_VAR` de `index.html`.
 
-### `.status` — el badge de estado
+---
 
-`<div class="status live">` para planes en curso. Sacá la clase `live` (o
-cambiá el texto) para los que todavía no arrancaron.
+## Diseño
+
+El sitio replica el lenguaje visual de
+[josechaparro.com](https://www.josechaparro.com): tipografía **Inter**,
+`primary #2563eb` → `secondary #7c3aed` en gradiente 135°, rampa de grises de
+Tailwind y dark mode por clase en `<html>`.
+
+- **`assets/theme.css`** — tokens, header, footer, botones y utilidades
+  compartidas. Única fuente de verdad de la paleta.
+- **`assets/theme.js`** — catálogo de planes, header, toggle de tema, barra de
+  progreso de lectura y scroll reveals.
+
+Cada plan conserva su layout propio (tablas, checklists, timelines) pero mapea
+sus tokens viejos a los del theme, así que hereda claro/oscuro sin reescribir
+sus reglas una por una.
+
+> **Ojo con los nombres de tokens.** Un plan que redefina en su `:root` un
+> nombre que ya existe en `theme.css` (`--bg`, `--surface`, `--border`,
+> `--text`, `--muted`) le gana al bloque `.dark` — misma especificidad, y el
+> `<style>` de la página va después del stylesheet. Eso congela la página en
+> una sola paleta. Mapeá solo los tokens propios de la página.
+
+El tema elegido se guarda en `localStorage` bajo `plans-theme`; si no hay nada
+guardado se respeta `prefers-color-scheme`. Un snippet inline en el `<head>` de
+cada página aplica la clase antes del primer paint para que el modo oscuro no
+parpadee en blanco.
 
 ---
 
