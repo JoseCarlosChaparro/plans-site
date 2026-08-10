@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 1 — Fuerza & Pérdida de Grasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0d0f;
+    --panel:#12161a;
+    --panel2:#171c22;
+    --line:#232b33;
+    --txt:#eef2f5;
+    --dim:#7c8894;
+    --dim2:#4a545e;
+    --lime:#c6f24e;
+    --heat:#ff7a45;
+    --ice:#5cc8ff;
+    --rose:#ff5c8a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--txt);
+    font-family:'Archivo',system-ui,sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;
+    background:
+      radial-gradient(700px 400px at 82% -5%, rgba(198,242,78,.10), transparent 60%),
+      radial-gradient(600px 400px at 0% 30%, rgba(255,122,69,.07), transparent 60%);
+    pointer-events:none;
+  }
+  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:56px 22px 100px}
+
+  /* ---------- reveal ---------- */
+  .rv{opacity:0;transform:translateY(20px);animation:rv .7s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes rv{to{opacity:1;transform:none}}
+  .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}
+  .d4{animation-delay:.28s}.d5{animation-delay:.36s}.d6{animation-delay:.44s}
+
+  /* ---------- header ---------- */
+  .eyebrow{
+    font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--lime);font-weight:500;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:clamp(40px,9.5vw,74px);line-height:.92;letter-spacing:-.02em;
+    margin-bottom:18px;
+  }
+  h1 .out{
+    color:transparent;-webkit-text-stroke:1.6px var(--lime);
+    background:linear-gradient(90deg,var(--lime),var(--heat));
+    -webkit-background-clip:text;background-clip:text;
+    animation:sweep 6s ease-in-out infinite alternate;
+  }
+  @keyframes sweep{from{filter:hue-rotate(0)}to{filter:hue-rotate(-18deg)}}
+  .lede{font-size:14.5px;color:var(--dim);line-height:1.75;max-width:560px}
+  .lede b{color:var(--txt);font-weight:500}
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px;margin:28px 0 46px}
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:14px 12px;position:relative;overflow:hidden;
+  }
+  .stat::after{
+    content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;
+    background:linear-gradient(90deg,var(--lime),transparent);
+    transform:scaleX(0);transform-origin:left;
+    animation:bar 1.1s .5s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  @keyframes bar{to{transform:scaleX(1)}}
+  .stat .k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin-bottom:6px}
+  .stat .v{font-family:'Archivo Black',sans-serif;font-size:22px;line-height:1}
+  .stat .t{font-size:10.5px;margin-top:5px;color:var(--dim)}
+  .up{color:var(--heat)} .down{color:var(--lime)} .neutral{color:var(--ice)}
+
+  /* ---------- section ---------- */
+  .sec{margin-bottom:52px}
+  .sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+  .sec-n{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.1em}
+  .sec-t{font-family:'Archivo Black',sans-serif;font-size:21px;letter-spacing:-.01em}
+  .sec-s{font-size:12.5px;color:var(--dim);margin-bottom:18px;line-height:1.6}
+
+  /* ---------- exercises ---------- */
+  .ex{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:0;margin-bottom:10px;overflow:hidden;
+    transition:border-color .25s,transform .25s;
+  }
+  .ex:hover{border-color:#2f3a44;transform:translateX(3px)}
+  .ex-top{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:16px 18px}
+  .ex-num{
+    width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:var(--panel2);
+    display:grid;place-items:center;
+    font-family:'Archivo Black',sans-serif;font-size:13px;color:var(--lime);
+  }
+  .ex-name{font-size:16px;font-weight:500;letter-spacing:-.01em}
+  .ex-tgt{font-size:11px;color:var(--dim);margin-top:3px}
+  .ex-sets{text-align:right}
+  .ex-sets .a{font-family:'Archivo Black',sans-serif;font-size:19px;color:var(--lime);line-height:1}
+  .ex-sets .b{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);margin-top:4px}
+  .ex-body{padding:0 18px 16px 76px;font-size:12.5px;color:var(--dim);line-height:1.7}
+  .ex-body .cue{color:var(--ice)}
+  .ex-body .easy{color:var(--lime)}
+
+  /* ---------- week grid ---------- */
+  .wk{display:grid;gap:7px}
+  .wk-row{
+    display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:13px 16px;
+    transition:background .2s;
+  }
+  .wk-row:hover{background:var(--panel2)}
+  .wk-d{font-family:'Archivo Black',sans-serif;font-size:12px;color:var(--dim2);letter-spacing:.08em}
+  .wk-a{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .chip{
+    font-size:11px;padding:5px 10px;border-radius:20px;border:1px solid var(--line);
+    background:var(--panel2);color:var(--dim);white-space:nowrap;
+  }
+  .chip.walk{border-color:rgba(92,200,255,.28);color:var(--ice);background:rgba(92,200,255,.07)}
+  .chip.lift{border-color:rgba(198,242,78,.3);color:var(--lime);background:rgba(198,242,78,.07)}
+  .chip.rest{border-color:var(--line);color:var(--dim2)}
+
+  /* ---------- progression ---------- */
+  .prog{display:grid;gap:8px}
+  .prog-row{
+    display:grid;grid-template-columns:78px 1fr auto;gap:14px;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+  }
+  .prog-row.now{border-color:rgba(198,242,78,.32);background:rgba(198,242,78,.045)}
+  .prog-w{font-family:'Archivo Black',sans-serif;font-size:12px;color:var(--dim2);letter-spacing:.06em}
+  .prog-row.now .prog-w{color:var(--lime)}
+  .prog-t{font-size:13px}
+  .prog-t small{display:block;color:var(--dim);font-size:11.5px;margin-top:3px}
+  .prog-v{font-family:'Archivo Black',sans-serif;font-size:15px;color:var(--heat);white-space:nowrap}
+
+  /* ---------- callout ---------- */
+  .call{
+    border:1px solid var(--line);border-left:3px solid var(--heat);
+    background:var(--panel);border-radius:8px;padding:20px 22px;margin-top:26px;
+  }
+  .call h4{font-family:'Archivo Black',sans-serif;font-size:14px;margin-bottom:12px}
+  .call ul{list-style:none;display:grid;gap:9px}
+  .call li{font-size:12.5px;color:var(--dim);line-height:1.65;padding-left:16px;position:relative}
+  .call li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--heat)}
+  .call li b{color:var(--txt);font-weight:500}
+
+  /* ---------- goal ---------- */
+  .goal{
+    margin-top:46px;border-radius:12px;padding:30px 28px;
+    background:linear-gradient(135deg,var(--lime),#9fd82e);
+    color:#0b0d0f;position:relative;overflow:hidden;
+  }
+  .goal::before{
+    content:'';position:absolute;inset:-40%;
+    background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.28),transparent 30%);
+    animation:spin 9s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .goal>*{position:relative}
+  .goal .k{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.62;margin-bottom:8px;font-weight:600}
+  .goal h3{font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1.05;margin-bottom:10px}
+  .goal p{font-size:13px;opacity:.72;line-height:1.65;max-width:520px}
+
+  @media(max-width:560px){
+    .ex-top{grid-template-columns:38px 1fr auto;gap:10px;padding:14px}
+    .ex-body{padding:0 14px 14px 14px}
+    .prog-row{grid-template-columns:1fr auto}
+    .prog-w{grid-column:1/-1}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="rv">
+    <div class="eyebrow">Fase 1 · Base · José</div>
+    <h1>FUERZA<br><span class="out">SIN EQUIPO</span></h1>
+    <p class="lede">Ocho semanas para construir músculo y bajar grasa <b>antes</b> de volver a correr. Solo peso corporal, en casa, 30 minutos. Empieza <b>lunes 10 de agosto</b>.</p>
+  </header>
+
+  <div class="stats rv d1">
+    <div class="stat"><div class="k">Peso</div><div class="v">87.3<span style="font-size:12px;color:var(--dim)">kg</span></div><div class="t up">↑ 2.7 desde mayo</div></div>
+    <div class="stat"><div class="k">Grasa</div><div class="v">31.0<span style="font-size:12px;color:var(--dim)">%</span></div><div class="t up">↑ 0.2</div></div>
+    <div class="stat"><div class="k">Músculo</div><div class="v">32.7<span style="font-size:12px;color:var(--dim)">kg</span></div><div class="t down">↑ 0.9 · bien</div></div>
+    <div class="stat"><div class="k">Visceral</div><div class="v">13.0</div><div class="t up">↑ 1.0 · foco</div></div>
+    <div class="stat"><div class="k">Basal</div><div class="v">1759</div><div class="t neutral">kcal/día</div></div>
+  </div>
+
+  <!-- LECTURA -->
+  <section class="sec rv d2">
+    <div class="sec-h"><span class="sec-n">00</span><span class="sec-t">Qué dicen tus números</span></div>
+    <p class="sec-s">De los 2.7 kg que subiste, ~1.7 kg es masa libre de grasa y ~1 kg es grasa. No fue una recaída limpia: ganaste músculo. Lo que sí hay que mover es la <b style="color:var(--heat)">grasa visceral, que pasó de 12 a 13</b> — es la que rodea los órganos y la que más responde al ejercicio. Ese es el número a vigilar, más que el peso.</p>
+    <div class="call" style="margin-top:6px">
+      <h4>Cómo medirte para que sirva</h4>
+      <ul>
+        <li><b>Siempre en ayunas, por la mañana</b>, después de ir al baño. Tu medición de las 23:09 lee alto por comida y líquidos del día.</li>
+        <li><b>Una vez por semana</b>, no diario. El peso fluctúa 1-2 kg por agua y no significa nada.</li>
+        <li><b>Mira la tendencia de 3 semanas</b>, no la medición suelta.</li>
+        <li>Estas básculas estiman grasa por impedancia: el <b>número absoluto es aproximado</b>, pero la tendencia sí es útil.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- RUTINA -->
+  <section class="sec rv d3">
+    <div class="sec-h"><span class="sec-n">01</span><span class="sec-t">La rutina · 30 min</span></div>
+    <p class="sec-s">Orden optimizado: alterna tren inferior y superior para que un grupo descanse mientras trabaja el otro. El core va al final a propósito.</p>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num">1</div>
+        <div><div class="ex-name">Sentadillas</div><div class="ex-tgt">Cuádriceps · Glúteos · Core</div></div>
+        <div class="ex-sets"><div class="a">2×12</div><div class="b">series</div></div>
+      </div>
+      <div class="ex-body">
+        Pies al ancho de hombros, punta ligeramente hacia afuera. Baja como si te sentaras en una silla invisible, pecho arriba, peso en los talones. <span class="cue">Clave: las rodillas no deben pasar mucho la punta del pie ni caerse hacia adentro.</span> <span class="easy">Si te cuesta: siéntate en una silla real y levántate sin usar las manos.</span>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num">2</div>
+        <div><div class="ex-name">Flexiones</div><div class="ex-tgt">Pecho · Tríceps · Hombro</div></div>
+        <div class="ex-sets"><div class="a">2×8</div><div class="b">series</div></div>
+      </div>
+      <div class="ex-body">
+        Manos un poco más abiertas que los hombros, cuerpo en línea recta de cabeza a talones. Baja hasta que el pecho casi toque el suelo. <span class="cue">Clave: no dejes caer la cadera ni levantes el trasero.</span> <span class="easy">Si te cuesta: hazlas con las manos apoyadas en una mesa o pared — mismo movimiento, menos peso.</span>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num">3</div>
+        <div><div class="ex-name">Zancadas</div><div class="ex-tgt">Piernas · Glúteos · Equilibrio</div></div>
+        <div class="ex-sets"><div class="a">2×10</div><div class="b">por pierna</div></div>
+      </div>
+      <div class="ex-body">
+        Da un paso largo al frente y baja hasta que ambas rodillas formen 90°. La rodilla de atrás casi toca el suelo. Empuja con el talón delantero para volver. <span class="cue">Clave: torso erguido, no te inclines hacia adelante.</span> <span class="easy">Si te cuesta: apóyate con una mano en la pared para el equilibrio.</span>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num">4</div>
+        <div><div class="ex-name">Puente de glúteo</div><div class="ex-tgt">Glúteos · Isquios · Lumbar</div></div>
+        <div class="ex-sets"><div class="a">2×15</div><div class="b">series</div></div>
+      </div>
+      <div class="ex-body">
+        Tumbado boca arriba, rodillas dobladas, pies apoyados. Levanta la cadera hasta formar línea recta de rodillas a hombros y aprieta los glúteos arriba 1 segundo. <span class="cue">Clave: el empuje viene del glúteo, no de la espalda baja.</span> Este ejercicio es especialmente útil para ti antes de volver a correr.
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num">5</div>
+        <div><div class="ex-name">Plancha</div><div class="ex-tgt">Core · Estabilidad</div></div>
+        <div class="ex-sets"><div class="a">2×20"</div><div class="b">segundos</div></div>
+      </div>
+      <div class="ex-body">
+        Antebrazos y puntas de los pies en el suelo, cuerpo en línea recta. Aprieta abdomen y glúteos. <span class="cue">Clave: mejor 20 segundos con buena forma que 60 con la cadera caída.</span> <span class="easy">Si te cuesta: apoya las rodillas.</span>
+      </div>
+    </div>
+
+    <div class="call">
+      <h4>Estructura de la sesión</h4>
+      <ul>
+        <li><b>5 min</b> — movilidad dinámica (la misma del documento de movilidad: círculos de cadera, rodillas al pecho, tobillos)</li>
+        <li><b>20 min</b> — los 5 ejercicios, 60-90 segundos de descanso entre series</li>
+        <li><b>5 min</b> — estiramientos estáticos: cuádriceps, isquios, flexor de cadera, gemelo</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- MOVILIDAD -->
+  <section class="sec rv d3">
+    <div class="sec-h"><span class="sec-n">01b</span><span class="sec-t">Movilidad & flexibilidad</span></div>
+    <p class="sec-s">Los 5 min de antes y los 5 de después no son relleno: son lo que evita que una molestia se convierta en lesión. Estos son los específicos para fuerza en casa.</p>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num" style="color:var(--ice)">↑</div>
+        <div><div class="ex-name">Antes · Movilidad dinámica</div><div class="ex-tgt">5 minutos · todo en movimiento</div></div>
+        <div class="ex-sets"><div class="a" style="color:var(--ice)">5'</div><div class="b">pre</div></div>
+      </div>
+      <div class="ex-body">
+        <b style="color:var(--txt)">Círculos de cadera</b> — 10 por sentido · <b style="color:var(--txt)">Rodillas al pecho caminando</b> — 20 pasos · <b style="color:var(--txt)">Talones al glúteo caminando</b> — 20 pasos · <b style="color:var(--txt)">Rotación de tobillos</b> — 10 por lado · <b style="color:var(--txt)">Círculos de brazos</b> — 15 adelante y 15 atrás.
+        <span class="cue">Nunca estiramientos estáticos antes: enfrían el músculo y reducen la fuerza que puedes producir.</span>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num" style="color:var(--lime)">↓</div>
+        <div><div class="ex-name">Después · Flexibilidad estática</div><div class="ex-tgt">5 minutos · músculo caliente</div></div>
+        <div class="ex-sets"><div class="a">5'</div><div class="b">post</div></div>
+      </div>
+      <div class="ex-body">
+        <b style="color:var(--txt)">Cuádriceps de pie</b> — 30" por pierna · <b style="color:var(--txt)">Isquios sentado</b> — 40" · <b style="color:var(--txt)">Estocada baja (flexor de cadera)</b> — 40" por lado · <b style="color:var(--txt)">Figura 4 tumbado</b> — 40" por lado.
+        <span class="cue">Tensión sí, dolor no. Respira durante el estiramiento, nunca contengas el aire.</span>
+      </div>
+    </div>
+
+    <div class="ex">
+      <div class="ex-top">
+        <div class="ex-num" style="color:var(--heat)">∞</div>
+        <div><div class="ex-name">Días de caminata · Movilidad profunda</div><div class="ex-tgt">12 minutos · opcional pero recomendable</div></div>
+        <div class="ex-sets"><div class="a" style="color:var(--heat)">12'</div><div class="b">mar/jue</div></div>
+      </div>
+      <div class="ex-body">
+        <b style="color:var(--txt)">Paloma (pigeon)</b> — 60" por lado, el mejor estiramiento de cadera que existe · <b style="color:var(--txt)">Mariposa</b> — 60", abre aductores · <b style="color:var(--txt)">Gato-vaca</b> — 10 repeticiones lentas, moviliza toda la columna · <b style="color:var(--txt)">Rodillas al pecho tumbado</b> — 60" meciendo suave.
+        <span class="easy">Estos son los días ideales para hacerlos: el cuerpo no viene cargado de la sesión de fuerza.</span>
+      </div>
+    </div>
+
+    <div class="call" style="border-left-color:var(--ice)">
+      <h4>Por qué importa en tu caso</h4>
+      <ul style="--dot:var(--ice)">
+        <li><b>Flexores de cadera acortados</b> — pasas el día sentado en el trabajo. La estocada baja contrarresta eso directamente.</li>
+        <li><b>Tobillos rígidos</b> — limitan la profundidad de la sentadilla y son factor de riesgo cuando vuelvas a correr.</li>
+        <li><b>Resultados en 4-6 semanas</b> — la flexibilidad es lo más lento en mejorar. Constancia, no intensidad.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SEMANA -->
+  <section class="sec rv d4">
+    <div class="sec-h"><span class="sec-n">02</span><span class="sec-t">Tu semana</span></div>
+    <p class="sec-s">Los 40 min de caminata al trabajo (20 ida + 20 vuelta) ya son tu base diaria. Todo lo demás se suma encima.</p>
+    <div class="wk">
+      <div class="wk-row"><div class="wk-d">LUN</div><div class="wk-a"><span class="chip walk">40 min al trabajo</span><span class="chip lift">30 min fuerza</span></div></div>
+      <div class="wk-row"><div class="wk-d">MAR</div><div class="wk-a"><span class="chip walk">40 min al trabajo</span><span class="chip walk">30 min caminata</span><span class="chip">12 min movilidad</span></div></div>
+      <div class="wk-row"><div class="wk-d">MIÉ</div><div class="wk-a"><span class="chip walk">40 min al trabajo</span><span class="chip lift">30 min fuerza</span></div></div>
+      <div class="wk-row"><div class="wk-d">JUE</div><div class="wk-a"><span class="chip walk">40 min al trabajo</span><span class="chip walk">30 min caminata</span><span class="chip">12 min movilidad</span></div></div>
+      <div class="wk-row"><div class="wk-d">VIE</div><div class="wk-a"><span class="chip walk">40 min al trabajo</span><span class="chip walk">30 min caminata</span><span class="chip" style="color:var(--dim2)">fuerza desde sem 3</span></div></div>
+      <div class="wk-row"><div class="wk-d">SÁB</div><div class="wk-a"><span class="chip walk">40 min caminata libre</span></div></div>
+      <div class="wk-row"><div class="wk-d">DOM</div><div class="wk-a"><span class="chip rest">Descanso total</span></div></div>
+    </div>
+  </section>
+
+  <!-- PROGRESIÓN -->
+  <section class="sec rv d5">
+    <div class="sec-h"><span class="sec-n">03</span><span class="sec-t">Progresión · 8 semanas</span></div>
+    <p class="sec-s">Del 10 de agosto al 4 de octubre. Sube volumen antes que dificultad.</p>
+    <div class="prog">
+      <div class="prog-row now">
+        <div class="prog-w">SEM 1–2</div>
+        <div class="prog-t">2 series · 2 días/semana<small>10–23 agosto · Deja que el cuerpo se acuerde. Las agujetas de la primera semana son normales.</small></div>
+        <div class="prog-v">~22 min</div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-w">SEM 3–4</div>
+        <div class="prog-t">3 series · 3 días/semana<small>24 agosto – 6 septiembre · Añades el viernes. Este es el salto más grande del plan.</small></div>
+        <div class="prog-v">~30 min</div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-w">SEM 5–6</div>
+        <div class="prog-t">3 series · +2 reps por ejercicio<small>7–20 septiembre · Sentadillas 14, flexiones 10, zancadas 12, puente 18, plancha 30".</small></div>
+        <div class="prog-v">~32 min</div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-w">SEM 7–8</div>
+        <div class="prog-t">3 series · versiones más difíciles<small>21 sep – 4 oct · Flexiones normales si hacías inclinadas. Plancha 45". Sentadilla más profunda.</small></div>
+        <div class="prog-v">~34 min</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGLAS -->
+  <section class="sec rv d6">
+    <div class="sec-h"><span class="sec-n">04</span><span class="sec-t">Lo que hace que funcione</span></div>
+    <div class="call" style="border-left-color:var(--lime);margin-top:0">
+      <h4>Reglas de la fase</h4>
+      <ul>
+        <li><b>La dieta manda.</b> El ejercicio no compensa comer de más. Tu plan alimenticio de ~1,950 kcal sigue vigente — es la mitad más importante de esto.</li>
+        <li><b>Proteína alta es innegociable.</b> ~140g al día. Sin ella, al perder peso pierdes músculo junto con la grasa, y eso baja tu metabolismo.</li>
+        <li><b>El peso puede no bajar y estar funcionando.</b> Si ganas músculo mientras pierdes grasa, la báscula se mueve poco pero el cuerpo cambia. Fíjate en la grasa visceral y en cómo te queda la ropa.</li>
+        <li><b>Nunca dos días seguidos de fuerza</b> al principio. El músculo se construye en el descanso, no en la sesión.</li>
+        <li><b>Agujetas sí, dolor articular no.</b> Molestia muscular difusa 24-48h después es normal. Dolor puntual en rodilla, hombro o espalda es señal de parar y revisar la técnica.</li>
+        <li><b>Si fallas un día, no falles dos.</b> Retomar es lo que separa esto de los intentos anteriores.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="goal rv d6">
+    <div class="k">Al terminar la fase · 4 de octubre</div>
+    <h3>Listo para volver a correr</h3>
+    <p>Con 8 semanas de fuerza y caminata diaria, tus rodillas, tobillos y tendones tendrán la base que no tenían en mayo. Ahí retomas el plan de running — y esta vez sin lesionarte.</p>
+  </div>
+
+</div>
+</body>
+</html>

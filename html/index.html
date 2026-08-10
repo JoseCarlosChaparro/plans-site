@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans — José Chaparro</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#08090b;--panel:#101317;--panel2:#161a20;--line:#212831;
+    --txt:#eef2f5;--dim:#7b8792;--dim2:#48525c;
+    --lime:#c6f24e;--ice:#5cc8ff;--heat:#ff7a45;--rose:#ff5c8a;--violet:#a78bfa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--txt);
+    font-family:'Archivo',system-ui,sans-serif;font-weight:300;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(760px 420px at 85% -10%, rgba(198,242,78,.09), transparent 62%),
+      radial-gradient(620px 420px at -8% 40%, rgba(92,200,255,.07), transparent 62%);
+  }
+  /* grain */
+  body::after{
+    content:'';position:fixed;inset:0;z-index:998;pointer-events:none;opacity:.032;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:0 22px 110px}
+
+  /* ---------- HERO ---------- */
+  .hero{min-height:82vh;display:flex;flex-direction:column;justify-content:center;padding:70px 0 40px}
+  .kicker{
+    font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--lime);
+    font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:12px;
+  }
+  .kicker .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
+  .kicker span.line{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(46px,11vw,104px);line-height:.88;letter-spacing:-.03em;margin-bottom:26px}
+  h1 .l{display:block;overflow:hidden}
+  h1 .l i{display:block;font-style:normal}
+  h1 .out{color:transparent;-webkit-text-stroke:1.8px var(--lime)}
+
+  .sub{font-size:15px;color:var(--dim);line-height:1.8;max-width:520px;margin-bottom:34px}
+  .sub b{color:var(--txt);font-weight:500}
+
+  .hstats{display:flex;gap:34px;flex-wrap:wrap}
+  .hs .n{font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1;color:var(--lime)}
+  .hs .l{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2);margin-top:5px;font-weight:500}
+
+  .scroll-hint{
+    margin-top:56px;display:flex;align-items:center;gap:10px;
+    font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim2);
+  }
+  .scroll-hint .arrow{
+    width:1px;height:26px;background:linear-gradient(180deg,var(--dim2),transparent);
+    animation:drop 1.8s ease-in-out infinite;
+  }
+  @keyframes drop{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(7px);opacity:.35}}
+
+  /* ---------- FILTERS ---------- */
+  .filters{
+    display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;
+    position:sticky;top:0;z-index:20;
+    padding:18px 0;background:linear-gradient(180deg,var(--ink) 62%,transparent);
+  }
+  .f{
+    font-size:11.5px;letter-spacing:.06em;padding:8px 15px;border-radius:22px;
+    border:1px solid var(--line);background:var(--panel);color:var(--dim);
+    cursor:pointer;transition:all .22s;font-family:inherit;
+  }
+  .f:hover{border-color:#2f3a44;color:var(--txt)}
+  .f.on{background:var(--lime);border-color:var(--lime);color:#08090b;font-weight:500}
+
+  /* ---------- GRID ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+
+  .card{
+    position:relative;background:var(--panel);border:1px solid var(--line);
+    border-radius:13px;overflow:hidden;text-decoration:none;color:inherit;
+    display:flex;flex-direction:column;min-height:250px;
+    transition:border-color .3s;
+    will-change:transform;
+  }
+  .card::before{
+    content:'';position:absolute;inset:0;opacity:0;transition:opacity .35s;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.055), transparent 42%);
+    pointer-events:none;z-index:2;
+  }
+  .card:hover::before{opacity:1}
+  .card:hover{border-color:#303a45}
+
+  .card-accent{height:3px;width:100%;transform-origin:left;transform:scaleX(0)}
+
+  .card-top{padding:22px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .cat{
+    font-size:9px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;
+    padding:4px 9px;border-radius:4px;
+  }
+  .num{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.08em}
+
+  .card-body{padding:16px 22px 22px;flex:1;display:flex;flex-direction:column}
+  .card h3{font-family:'Archivo Black',sans-serif;font-size:21px;line-height:1.12;letter-spacing:-.015em;margin-bottom:9px}
+  .card p{font-size:12.5px;color:var(--dim);line-height:1.68;flex:1}
+
+  .card-foot{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-top:18px;padding-top:15px;border-top:1px solid var(--line);
+  }
+  .meta{display:flex;gap:14px;font-size:10.5px;color:var(--dim2)}
+  .meta b{color:var(--dim);font-weight:400}
+  .go{
+    display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:500;transition:gap .25s;
+  }
+  .card:hover .go{gap:12px}
+
+  .status{
+    position:absolute;top:22px;right:22px;z-index:3;
+    display:flex;align-items:center;gap:6px;font-size:9.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--dim2);
+  }
+  .status .sd{width:5px;height:5px;border-radius:50%;background:var(--dim2)}
+  .status.live .sd{background:var(--lime);box-shadow:0 0 0 0 rgba(198,242,78,.5);animation:ring 2s infinite}
+  .status.live{color:var(--lime)}
+  @keyframes ring{0%{box-shadow:0 0 0 0 rgba(198,242,78,.45)}70%{box-shadow:0 0 0 7px rgba(198,242,78,0)}100%{box-shadow:0 0 0 0 rgba(198,242,78,0)}}
+
+  /* section head */
+  .sh{display:flex;align-items:baseline;gap:13px;margin:64px 0 8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .sh-n{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.1em}
+  .sh-t{font-family:'Archivo Black',sans-serif;font-size:20px}
+  .sh-c{margin-left:auto;font-size:11px;color:var(--dim2)}
+
+  /* footer */
+  footer{
+    margin-top:80px;padding-top:26px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    font-size:11.5px;color:var(--dim2);
+  }
+  footer b{color:var(--dim);font-weight:400}
+
+  @media(max-width:600px){
+    .hero{min-height:76vh}
+    .grid{grid-template-columns:1fr}
+    .hstats{gap:24px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="kicker" data-fade><span class="dot"></span> josechaparro.com/plans <span class="line"></span></div>
+    <h1>
+      <span class="l"><i data-line>TODOS MIS</i></span>
+      <span class="l"><i data-line class="out">PLANES</i></span>
+    </h1>
+    <p class="sub" data-fade>Entrenamiento, alimentación, movilidad. Documentos vivos que se actualizan conforme avanzo — no capturas de un momento. <b>Última revisión: 9 de agosto de 2026.</b></p>
+    <div class="hstats">
+      <div class="hs" data-fade><div class="n" data-count="4">0</div><div class="l">Documentos</div></div>
+      <div class="hs" data-fade><div class="n" data-count="28">0</div><div class="l">Semanas planeadas</div></div>
+      <div class="hs" data-fade><div class="n" data-count="87">0</div><div class="l">Sesiones totales</div></div>
+    </div>
+    <div class="scroll-hint" data-fade>Scroll <span class="arrow"></span></div>
+  </section>
+
+  <!-- FILTERS -->
+  <div class="filters" data-fade>
+    <button class="f on" data-filter="all">Todo</button>
+    <button class="f" data-filter="activo">Activo ahora</button>
+    <button class="f" data-filter="entrenamiento">Entrenamiento</button>
+    <button class="f" data-filter="nutricion">Nutrición</button>
+    <button class="f" data-filter="futuro">Programado</button>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid" id="grid">
+
+    <a class="card" href="./plan-fuerza-jose.html" data-tags="activo entrenamiento" data-accent="#c6f24e">
+      <div class="card-accent" style="background:linear-gradient(90deg,#c6f24e,transparent)"></div>
+      <div class="status live"><span class="sd"></span> En curso</div>
+      <div class="card-top">
+        <span class="cat" style="background:rgba(198,242,78,.12);color:#c6f24e">Fuerza</span>
+      </div>
+      <div class="card-body">
+        <h3>Fuerza sin equipo</h3>
+        <p>Ocho semanas de peso corporal en casa para construir base antes de volver a correr. Cinco ejercicios, 30 minutos, tres días por semana.</p>
+        <div class="card-foot">
+          <div class="meta"><span><b>8</b> semanas</span><span><b>10 ago</b> → 4 oct</span></div>
+          <div class="go" style="color:#c6f24e">Abrir →</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="./plan-alimenticio-jose.html" data-tags="activo nutricion" data-accent="#ff7a45">
+      <div class="card-accent" style="background:linear-gradient(90deg,#ff7a45,transparent)"></div>
+      <div class="status live"><span class="sd"></span> En curso</div>
+      <div class="card-top">
+        <span class="cat" style="background:rgba(255,122,69,.13);color:#ff7a45">Nutrición</span>
+      </div>
+      <div class="card-body">
+        <h3>Come bien, come simple</h3>
+        <p>Plan de ~1,950 kcal construido sobre lo que ya sé cocinar. Porciones visuales sin báscula, tres comidas, opciones intercambiables.</p>
+        <div class="card-foot">
+          <div class="meta"><span><b>1,950</b> kcal/día</span><span><b>140g</b> proteína</span></div>
+          <div class="go" style="color:#ff7a45">Abrir →</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="./movilidad-runners.html" data-tags="activo entrenamiento" data-accent="#5cc8ff">
+      <div class="card-accent" style="background:linear-gradient(90deg,#5cc8ff,transparent)"></div>
+      <div class="status live"><span class="sd"></span> En curso</div>
+      <div class="card-top">
+        <span class="cat" style="background:rgba(92,200,255,.13);color:#5cc8ff">Movilidad</span>
+      </div>
+      <div class="card-body">
+        <h3>Movilidad & flexibilidad</h3>
+        <p>Tres rutinas separadas: dinámica antes de entrenar, estática después, y movilidad profunda para los días de descanso activo.</p>
+        <div class="card-foot">
+          <div class="meta"><span><b>16</b> ejercicios</span><span><b>8–12</b> min</span></div>
+          <div class="go" style="color:#5cc8ff">Abrir →</div>
+        </div>
+      </div>
+    </a>
+
+    <a class="card" href="./running-roadmap-v2.html" data-tags="futuro entrenamiento" data-accent="#a78bfa">
+      <div class="card-accent" style="background:linear-gradient(90deg,#a78bfa,transparent)"></div>
+      <div class="status"><span class="sd"></span> Programado</div>
+      <div class="card-top">
+        <span class="cat" style="background:rgba(167,139,250,.14);color:#a78bfa">Running</span>
+      </div>
+      <div class="card-body">
+        <h3>De cero a 5K · v2</h3>
+        <p>Roadmap corregido tras auditar la v1: fechas reales, dos semanas puente añadidas y ningún salto que viole la regla del 10%.</p>
+        <div class="card-foot">
+          <div class="meta"><span><b>20</b> semanas</span><span><b>5 oct</b> → 15 feb</span></div>
+          <div class="go" style="color:#a78bfa">Abrir →</div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    <div>José Chaparro · <b>Plans</b></div>
+    <div>Actualizado <b>09.08.2026</b></div>
+  </footer>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hasGSAP = typeof gsap !== 'undefined';
+
+  // ---- Fallback: if GSAP fails to load, just show everything ----
+  if(!hasGSAP || reduced){
+    document.querySelectorAll('[data-line],[data-fade],.card,.card-accent').forEach(function(el){
+      el.style.opacity = 1; el.style.transform = 'none';
+    });
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      el.textContent = el.getAttribute('data-count');
+    });
+    initFilters();
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ---------- HERO ----------
+  var tl = gsap.timeline({defaults:{ease:'power3.out'}});
+
+  tl.from('[data-line]', {yPercent:105, duration:1, stagger:.09})
+    .from('.kicker', {opacity:0, y:14, duration:.7}, '-=.7')
+    .from('.sub', {opacity:0, y:18, duration:.8}, '-=.55')
+    .from('.hs', {opacity:0, y:18, duration:.7, stagger:.09}, '-=.5')
+    .from('.scroll-hint', {opacity:0, duration:.7}, '-=.35')
+    .from('.filters', {opacity:0, y:14, duration:.7}, '-=.5');
+
+  // ---------- COUNTERS ----------
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var target = +el.getAttribute('data-count');
+    var obj = {v:0};
+    gsap.to(obj, {
+      v: target, duration: 1.6, ease:'power2.out', delay:.8,
+      onUpdate: function(){ el.textContent = Math.round(obj.v); }
+    });
+  });
+
+  // ---------- CARDS ON SCROLL ----------
+  gsap.utils.toArray('.card').forEach(function(card, i){
+    gsap.from(card, {
+      opacity:0, y:44, duration:.85, ease:'power3.out',
+      scrollTrigger:{ trigger:card, start:'top 88%', once:true },
+      delay:(i % 2) * .07
+    });
+    gsap.to(card.querySelector('.card-accent'), {
+      scaleX:1, duration:1.1, ease:'power3.out',
+      scrollTrigger:{ trigger:card, start:'top 88%', once:true },
+      delay:.2 + (i % 2) * .07
+    });
+  });
+
+  // ---------- HERO PARALLAX ----------
+  gsap.to('.hero', {
+    yPercent: 9, opacity:.45, ease:'none',
+    scrollTrigger:{ trigger:'.hero', start:'top top', end:'bottom top', scrub:.6 }
+  });
+
+  // ---------- CURSOR GLOW + TILT ----------
+  document.querySelectorAll('.card').forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      card.style.setProperty('--mx', x + 'px');
+      card.style.setProperty('--my', y + 'px');
+      gsap.to(card, {
+        rotateY: ((x / r.width) - .5) * 5,
+        rotateX: ((y / r.height) - .5) * -5,
+        transformPerspective: 900,
+        duration:.5, ease:'power2.out'
+      });
+    });
+    card.addEventListener('mouseleave', function(){
+      gsap.to(card, {rotateX:0, rotateY:0, duration:.6, ease:'power3.out'});
+    });
+  });
+
+  initFilters();
+
+  // ---------- FILTERS ----------
+  function initFilters(){
+    var btns = document.querySelectorAll('.f');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        btns.forEach(function(b){ b.classList.remove('on'); });
+        btn.classList.add('on');
+        var f = btn.getAttribute('data-filter');
+
+        cards.forEach(function(card){
+          var tags = card.getAttribute('data-tags') || '';
+          var show = (f === 'all') || tags.indexOf(f) !== -1;
+
+          if(!hasGSAP || reduced){
+            card.style.display = show ? '' : 'none';
+            return;
+          }
+          if(show){
+            card.style.display = '';
+            gsap.fromTo(card, {opacity:0, scale:.96, y:14},
+              {opacity:1, scale:1, y:0, duration:.45, ease:'power2.out'});
+          } else {
+            gsap.to(card, {opacity:0, scale:.96, duration:.28, ease:'power2.in',
+              onComplete:function(){ card.style.display='none'; }});
+          }
+        });
+        if(hasGSAP && !reduced){ setTimeout(function(){ ScrollTrigger.refresh(); }, 500); }
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

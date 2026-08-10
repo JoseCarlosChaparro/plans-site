@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Alimenticio — José</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #161616;
+    --card: #1c1c1c;
+    --border: #262626;
+    --accent: #4ade80;
+    --accent2: #fb923c;
+    --accent3: #60a5fa;
+    --text: #f0f0f0;
+    --muted: #666;
+    --muted2: #444;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 56px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 10vw, 80px);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 20px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .header-meta {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .meta-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .meta-pill strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Portion guide */
+  .portion-section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .portion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  .portion-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .portion-icon { font-size: 28px; margin-bottom: 8px; }
+
+  .portion-food {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .portion-ref {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .portion-gram {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Meal sections */
+  .meals {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .meal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .meal-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meal-time {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  .meal-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .meal-kcal {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .meal-kcal strong {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent2);
+    font-weight: 400;
+  }
+
+  .meal-options {
+    padding: 16px 20px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .option {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+    padding: 12px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .option-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .option-foods {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .option-foods em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .option-macros {
+    text-align: right;
+    min-width: 70px;
+  }
+
+  .macro-row {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .macro-row span {
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  /* Divider */
+  .or-divider {
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin: -4px 0;
+  }
+
+  /* Totals */
+  .totals {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .totals-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    color: var(--muted);
+  }
+
+  .totals-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .total-item {
+    text-align: center;
+    padding: 14px;
+    background: var(--surface);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  .total-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .total-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Rules */
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .rule {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px;
+  }
+
+  .rule-icon { font-size: 22px; margin-bottom: 8px; }
+
+  .rule-title {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+
+  .rule-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Water tracker */
+  .water {
+    margin-top: 40px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .water-icon { font-size: 32px; }
+
+  .water-text { flex: 1; }
+
+  .water-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--accent3);
+  }
+
+  .water-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .water-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    color: var(--accent3);
+    line-height: 1;
+  }
+
+  .water-unit {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 560px) {
+    .totals-grid { grid-template-columns: repeat(2, 1fr); }
+    .option { grid-template-columns: 1fr; }
+    .option-macros { text-align: left; display: flex; gap: 12px; }
+    .meal-header { grid-template-columns: 1fr auto; }
+    .meal-time { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="eyebrow">Plan alimenticio · José</div>
+    <h1>COME BIEN,<br><span>COME SIMPLE</span></h1>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;max-width:500px;">Basado en lo que ya sabes cocinar. Sin contar calorías — solo porciones visuales y combinaciones inteligentes.</p>
+    <div class="header-meta">
+      <div class="meta-pill">Meta calórica: <strong>~1,950 kcal/día</strong></div>
+      <div class="meta-pill">Proteína objetivo: <strong>~140g/día</strong></div>
+      <div class="meta-pill">Grasa corporal actual: <strong>30.8%</strong></div>
+    </div>
+  </div>
+
+  <!-- Portion guide -->
+  <div class="portion-section">
+    <div class="section-label">Guía de porciones — sin báscula</div>
+    <div class="portion-grid">
+      <div class="portion-card">
+        <div class="portion-icon">✊</div>
+        <div class="portion-food">Arroz / Papa</div>
+        <div class="portion-ref">1 puño cerrado</div>
+        <div class="portion-gram">~150g cocido</div>
+      </div>
+      <div class="portion-card">
+        <div class="portion-icon">🫓</div>
+        <div class="portion-food">Tortillas / Tostadas</div>
+        <div class="portion-ref">2 tortillas medianas</div>
+        <div class="portion-gram">~60g · horneadas</div>
+      </div>
+      <div class="portion-card">
+        <div class="portion-icon">🖐️</div>
+        <div class="portion-food">Carne / Pollo / Pescado</div>
+        <div class="portion-ref">Palma de la mano</div>
+        <div class="portion-gram">~120-150g</div>
+      </div>
+      <div class="portion-card">
+        <div class="portion-icon">👍</div>
+        <div class="portion-food">Aceite / Grasa</div>
+        <div class="portion-ref">1 pulgar</div>
+        <div class="portion-gram">~15ml</div>
+      </div>
+      <div class="portion-card">
+        <div class="portion-icon">🤲</div>
+        <div class="portion-food">Verduras</div>
+        <div class="portion-ref">Las dos manos</div>
+        <div class="portion-gram">Sin límite real</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meals -->
+  <div class="section-label" style="margin-bottom:16px">Tus 3 comidas del día</div>
+  <div class="meals">
+
+    <!-- Desayuno -->
+    <div class="meal-card">
+      <div class="meal-header">
+        <div class="meal-time">7–9 AM</div>
+        <div class="meal-name">Desayuno</div>
+        <div class="meal-kcal"><strong>~500</strong> kcal</div>
+      </div>
+      <div class="meal-options">
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción A — Tu clásico con huevos</div>
+            <div class="option-foods">
+              <em>3 huevos revueltos</em> + <em>2 rebanadas de pan</em> con lechuga · café o té sin azúcar
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>24g</span></div>
+            <div class="macro-row">Carb <span>38g</span></div>
+            <div class="macro-row">Gras <span>18g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción B — Sándwich completo</div>
+            <div class="option-foods">
+              <em>2 huevos</em> + <em>jamón de pavo</em> + <em>lechuga</em> en 2 rebanadas de pan · sin mayonesa o mínima
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>28g</span></div>
+            <div class="macro-row">Carb <span>36g</span></div>
+            <div class="macro-row">Gras <span>14g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción D — Con tortillas horneadas</div>
+            <div class="option-foods">
+              <em>3 huevos revueltos</em> + <em>2 tortillas horneadas</em> + <em>lechuga</em> · como taco sin freír
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>22g</span></div>
+            <div class="macro-row">Carb <span>32g</span></div>
+            <div class="macro-row">Gras <span>16g</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Almuerzo -->
+    <div class="meal-card">
+      <div class="meal-header">
+        <div class="meal-time">12–2 PM</div>
+        <div class="meal-name">Almuerzo</div>
+        <div class="meal-kcal"><strong>~750</strong> kcal</div>
+      </div>
+      <div class="meal-options">
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción A — Pollo</div>
+            <div class="option-foods">
+              <em>Fajitas de pollo</em> (1 palma) al sartén + <em>arroz</em> (1 puño) + <em>lechuga</em> abundante con limón
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>42g</span></div>
+            <div class="macro-row">Carb <span>48g</span></div>
+            <div class="macro-row">Gras <span>14g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción B — Carne molida</div>
+            <div class="option-foods">
+              <em>Carne molida</em> (1 palma) + <em>papa</em> (1 puño) cocida o asada + <em>lechuga</em> abundante
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>38g</span></div>
+            <div class="macro-row">Carb <span>40g</span></div>
+            <div class="macro-row">Gras <span>20g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción C — Pescado</div>
+            <div class="option-foods">
+              <em>Filete de pescado</em> (1 palma) al sartén + <em>arroz</em> (1 puño) + <em>lechuga</em> con tomate
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>45g</span></div>
+            <div class="macro-row">Carb <span>46g</span></div>
+            <div class="macro-row">Gras <span>8g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción D — Tacos horneados</div>
+            <div class="option-foods">
+              <em>Pollo o carne molida</em> (1 palma) + <em>2 tortillas horneadas</em> + <em>lechuga</em> + limón · sin freír
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>40g</span></div>
+            <div class="macro-row">Carb <span>38g</span></div>
+            <div class="macro-row">Gras <span>12g</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="meal-card">
+      <div class="meal-header">
+        <div class="meal-time">7–9 PM</div>
+        <div class="meal-name">Cena</div>
+        <div class="meal-kcal"><strong>~550</strong> kcal</div>
+      </div>
+      <div class="meal-options">
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción A — Tu yogur de noche (ideal)</div>
+            <div class="option-foods">
+              <em>Yogur griego</em> (1 taza grande) + <em>fruta</em> (plátano o fresas) · cambia la granola por avena o elimínala
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>20g</span></div>
+            <div class="macro-row">Carb <span>28g</span></div>
+            <div class="macro-row">Gras <span>4g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción B — Sándwich nocturno</div>
+            <div class="option-foods">
+              <em>Jamón de pavo o atún</em> + <em>lechuga</em> abundante en 2 rebanadas de pan · sin mayonesa o mínima
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>26g</span></div>
+            <div class="macro-row">Carb <span>34g</span></div>
+            <div class="macro-row">Gras <span>8g</span></div>
+          </div>
+        </div>
+
+        <div class="or-divider">— o —</div>
+
+        <div class="option">
+          <div>
+            <div class="option-label">Opción C — Si entrenas tarde</div>
+            <div class="option-foods">
+              <em>Pescado o pollo</em> (1 palma) al sartén + <em>lechuga</em> abundante · come dentro de la hora post-entreno
+            </div>
+          </div>
+          <div class="option-macros">
+            <div class="macro-row">Prot <span>40g</span></div>
+            <div class="macro-row">Carb <span>10g</span></div>
+            <div class="macro-row">Gras <span>8g</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Totals -->
+  <div class="totals">
+    <div class="totals-title">Totales diarios aproximados</div>
+    <div class="totals-grid">
+      <div class="total-item">
+        <div class="total-num">1,950</div>
+        <div class="total-label">Calorías</div>
+      </div>
+      <div class="total-item">
+        <div class="total-num" style="color:var(--accent3)">140g</div>
+        <div class="total-label">Proteína</div>
+      </div>
+      <div class="total-item">
+        <div class="total-num" style="color:var(--accent2)">160g</div>
+        <div class="total-label">Carbohidratos</div>
+      </div>
+      <div class="total-item">
+        <div class="total-num" style="color:#f472b6">55g</div>
+        <div class="total-label">Grasas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Water -->
+  <div class="water">
+    <div class="water-icon">💧</div>
+    <div class="water-text">
+      <div class="water-title">Hidratación diaria</div>
+      <div class="water-desc">Con tu peso y el ejercicio que harás, necesitas al menos 2.5L al día. Los días que corres, añade un vaso extra antes y otro después.</div>
+    </div>
+    <div>
+      <div class="water-amount">2.5L</div>
+      <div class="water-unit">mínimo / día</div>
+    </div>
+  </div>
+
+  <!-- Rules -->
+  <div class="rules" style="margin-top:40px">
+    <div class="rule">
+      <div class="rule-icon">🥩</div>
+      <div class="rule-title">Proteína en cada comida</div>
+      <div class="rule-text">Carne, pollo, pescado o huevos en las 3 comidas. Protege tu músculo mientras pierdes grasa.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-icon">🍚</div>
+      <div class="rule-title">Carbohidratos de día</div>
+      <div class="rule-text">Arroz y papa mejor en desayuno y almuerzo. En la cena reduce a la mitad o elimina si no entrenas tarde.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-icon">🥗</div>
+      <div class="rule-title">Lechuga sin límite</div>
+      <div class="rule-text">Come tanta lechuga (y verduras en general) como quieras. Llenan, tienen pocas calorías y son buenas para la saciedad.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-icon">🍳</div>
+      <div class="rule-title">Aceite con cuidado</div>
+      <div class="rule-text">Solo 1 pulgar de aceite por sartén. Es donde se van muchas calorías sin darte cuenta.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-icon">🚫</div>
+      <div class="rule-title">Lo que más suma calorías</div>
+      <div class="rule-text">Refrescos, jugos, alcohol, salsas, mayonesa, granola en exceso. No tienes que eliminarlos, solo reducirlos.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-icon">⏰</div>
+      <div class="rule-title">Come antes de entrenar</div>
+      <div class="rule-text">Deja pasar al menos 1.5h entre comer y correr. Después del run come dentro de la hora siguiente.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

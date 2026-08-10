@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap 0 a 5K — v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#08090b;--panel:#101317;--panel2:#161a20;--line:#212831;
+    --txt:#eef2f5;--dim:#7b8792;--dim2:#48525c;
+    --ice:#5cc8ff;--lime:#c6f24e;--heat:#ff7a45;--rose:#ff5c8a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--ink);color:var(--txt);font-family:'Archivo',system-ui,sans-serif;font-weight:300;overflow-x:hidden}
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(680px 380px at 90% -8%, rgba(92,200,255,.10), transparent 62%),
+      radial-gradient(560px 380px at -5% 45%, rgba(198,242,78,.06), transparent 62%);
+  }
+  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:56px 22px 100px}
+
+  .rv{opacity:0;transform:translateY(20px);animation:rv .7s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes rv{to{opacity:1;transform:none}}
+  .d1{animation-delay:.06s}.d2{animation-delay:.14s}.d3{animation-delay:.22s}
+  .d4{animation-delay:.3s}.d5{animation-delay:.38s}.d6{animation-delay:.46s}
+
+  .eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ice);font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+  h1{font-family:'Archivo Black',sans-serif;font-size:clamp(40px,9.5vw,74px);line-height:.92;letter-spacing:-.02em;margin-bottom:18px}
+  h1 .out{color:transparent;-webkit-text-stroke:1.6px var(--ice)}
+  .lede{font-size:14.5px;color:var(--dim);line-height:1.75;max-width:580px}
+  .lede b{color:var(--txt);font-weight:500}
+
+  /* audit banner */
+  .audit{
+    margin:30px 0 44px;background:var(--panel);border:1px solid var(--line);
+    border-left:3px solid var(--heat);border-radius:9px;padding:20px 22px;
+  }
+  .audit h4{font-family:'Archivo Black',sans-serif;font-size:13px;margin-bottom:13px;color:var(--heat)}
+  .audit ul{list-style:none;display:grid;gap:10px}
+  .audit li{font-size:12.5px;color:var(--dim);line-height:1.65;padding-left:20px;position:relative}
+  .audit li::before{content:'✕';position:absolute;left:0;color:var(--heat);font-size:11px;top:1px}
+  .audit li b{color:var(--txt);font-weight:500}
+  .audit li i{color:var(--lime);font-style:normal}
+
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+  .mchip{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:11.5px;color:var(--dim)}
+  .mchip b{color:var(--ice);font-weight:500}
+
+  .sec{margin-bottom:46px}
+  .sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;padding-bottom:11px;border-bottom:1px solid var(--line)}
+  .sec-n{font-family:'Archivo Black',sans-serif;font-size:11px;color:var(--dim2);letter-spacing:.1em}
+  .sec-t{font-family:'Archivo Black',sans-serif;font-size:20px}
+  .sec-b{margin-left:auto;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:4px;font-weight:500}
+  .b1{background:rgba(92,200,255,.13);color:var(--ice)}
+  .b2{background:rgba(198,242,78,.12);color:var(--lime)}
+  .b3{background:rgba(255,122,69,.14);color:var(--heat)}
+  .b4{background:rgba(255,92,138,.14);color:var(--rose)}
+  .sec-s{font-size:12.5px;color:var(--dim);margin:14px 0 16px;line-height:1.65}
+
+  .wks{display:grid;gap:8px}
+  .w{
+    display:grid;grid-template-columns:94px 1fr 96px;gap:14px;align-items:center;
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 17px;
+    transition:border-color .22s,transform .22s;
+  }
+  .w:hover{border-color:#2c353f;transform:translateX(3px)}
+  .w.mile{border-color:rgba(198,242,78,.3);background:rgba(198,242,78,.045)}
+  .w-l{font-family:'Archivo Black',sans-serif;font-size:11.5px;color:var(--dim2);letter-spacing:.06em;line-height:1.5}
+  .w-l small{display:block;font-family:'Archivo',sans-serif;font-weight:300;font-size:10px;color:var(--dim2);margin-top:2px}
+  .w.mile .w-l{color:var(--lime)}
+  .w-s{font-size:13px;line-height:1.5}
+  .w-d{font-size:11.5px;color:var(--dim);margin-top:4px;line-height:1.5}
+  .tag{display:inline-block;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-right:7px;vertical-align:middle;font-weight:500}
+  .t-mix{background:rgba(255,122,69,.15);color:var(--heat)}
+  .t-int{background:rgba(198,242,78,.12);color:var(--lime)}
+  .t-con{background:rgba(92,200,255,.14);color:var(--ice)}
+  .bar{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .bt{width:88px;height:4px;background:var(--line);border-radius:3px;overflow:hidden}
+  .bf{height:100%;border-radius:3px;transform-origin:left;transform:scaleX(0);animation:grow 1s .4s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes grow{to{transform:scaleX(1)}}
+  .bl{font-size:10px;color:var(--dim2);letter-spacing:.04em}
+
+  .goal{margin-top:44px;border-radius:12px;padding:30px 28px;background:linear-gradient(135deg,var(--ice),#2f9fd6);color:#06080a;position:relative;overflow:hidden}
+  .goal::before{content:'';position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.3),transparent 30%);animation:spin 9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .goal>*{position:relative}
+  .goal .k{font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.6;margin-bottom:8px;font-weight:600}
+  .goal h3{font-family:'Archivo Black',sans-serif;font-size:32px;line-height:1.03;margin-bottom:10px}
+  .goal p{font-size:13px;opacity:.72;line-height:1.65;max-width:540px}
+  .gstats{display:flex;gap:26px;margin-top:20px;flex-wrap:wrap}
+  .gs .n{font-family:'Archivo Black',sans-serif;font-size:26px;line-height:1}
+  .gs .l{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-top:3px;font-weight:600}
+
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin-top:40px}
+  .r{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:17px;transition:border-color .22s}
+  .r:hover{border-color:#2c353f}
+  .r-i{font-size:19px;margin-bottom:8px}
+  .r-t{font-size:12.5px;font-weight:500;margin-bottom:5px}
+  .r-x{font-size:11.5px;color:var(--dim);line-height:1.6}
+
+  @media(max-width:600px){
+    .w{grid-template-columns:80px 1fr}
+    .bar{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="rv">
+    <div class="eyebrow">Roadmap v2 · corregido · José</div>
+    <h1>DE CERO<br><span class="out">A 5KM</span></h1>
+    <p class="lede">Versión revisada del plan de mayo. Fechas reales, progresión sin saltos peligrosos, y arranque después de tu fase de fuerza. <b>Empieza el 5 de octubre de 2026.</b></p>
+  </header>
+
+  <div class="audit rv d1">
+    <h4>Auditoría del plan anterior — 4 problemas corregidos</h4>
+    <ul>
+      <li><b>Fechas muertas.</b> Decía "mayo a septiembre". Hoy es 9 de agosto. <i>→ Reanclado a octubre 2026 – febrero 2027.</i></li>
+      <li><b>Salto ilegal en la semana 13.</b> Pasaba de bloques de 8 min a 20 min continuos: un +20% de volumen de golpe, justo lo que la regla del 10% prohíbe. <i>→ Añadidas semanas puente de 12 y 15 min.</i></li>
+      <li><b>Segundo salto en semana 17.</b> De 40 a 50 min es +25%. <i>→ Suavizado a incrementos de 5 min.</i></li>
+      <li><b>Ignoraba tu punto de partida real.</b> A 87.3 kg el impacto articular es mayor que en mayo. <i>→ Arranca solo después de 8 semanas de fuerza y caminata.</i></li>
+    </ul>
+  </div>
+
+  <div class="meta rv d1">
+    <div class="mchip">Inicio: <b>5 oct 2026</b></div>
+    <div class="mchip">Meta: <b>15 feb 2027</b></div>
+    <div class="mchip">Duración: <b>20 semanas</b></div>
+    <div class="mchip">Frecuencia: <b>3 días/semana</b></div>
+    <div class="mchip">Prerequisito: <b>Fase fuerza completa</b></div>
+  </div>
+
+  <!-- FASE 1 -->
+  <section class="sec rv d2" style="margin-top:44px">
+    <div class="sec-h"><span class="sec-n">FASE 01</span><span class="sec-t">Adaptación</span><span class="sec-b b1">Sem 1–4</span></div>
+    <p class="sec-s">Reintroduces el impacto poco a poco. Tus tendones llevan 8 semanas fortaleciéndose con la fuerza — ahora los expones a correr.</p>
+    <div class="wks">
+      <div class="w">
+        <div class="w-l">SEM 1–2<small>5–18 oct</small></div>
+        <div><div class="w-s"><span class="tag t-mix">Mixto</span>5' caminar → 5× (1' trote / 2' caminar) → 5' caminar</div><div class="w-d">~25 min · Ritmo conversación, sin excepción</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:24%;background:var(--heat)"></div></div><div class="bl">25 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 3–4<small>19 oct – 1 nov</small></div>
+        <div><div class="w-s"><span class="tag t-mix">Mixto</span>5' caminar → 6× (1.5' trote / 1.5' caminar) → 5' caminar</div><div class="w-d">~28 min · Primera vez que trotas más de lo que caminas</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:27%;background:var(--heat)"></div></div><div class="bl">28 min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 2 -->
+  <section class="sec rv d3">
+    <div class="sec-h"><span class="sec-n">FASE 02</span><span class="sec-t">Construcción</span><span class="sec-b b2">Sem 5–10</span></div>
+    <p class="sec-s">Las pausas se acortan, los bloques se alargan. Aquí es donde la mayoría abandona — la clave es no subir el ritmo, solo el tiempo.</p>
+    <div class="wks">
+      <div class="w">
+        <div class="w-l">SEM 5–6<small>2–15 nov</small></div>
+        <div><div class="w-s"><span class="tag t-int">Intervalos</span>5' caminar → 5× (2' trote / 1' caminar) → 5' caminar</div><div class="w-d">~25 min · Menos pausas, mismo tiempo total</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:24%;background:var(--lime)"></div></div><div class="bl">25 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 7–8<small>16–29 nov</small></div>
+        <div><div class="w-s"><span class="tag t-int">Intervalos</span>5' caminar → 4× (3' trote / 1' caminar) → 5' caminar</div><div class="w-d">~26 min · Bloques de 3 minutos consecutivos</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:25%;background:var(--lime)"></div></div><div class="bl">26 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 9–10<small>30 nov – 13 dic</small></div>
+        <div><div class="w-s"><span class="tag t-int">Intervalos</span>5' caminar → 3× (5' trote / 1' caminar) → 5' caminar</div><div class="w-d">~28 min · Ya aguantas 5 minutos seguidos</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:27%;background:var(--lime)"></div></div><div class="bl">28 min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 3 -->
+  <section class="sec rv d4">
+    <div class="sec-h"><span class="sec-n">FASE 03</span><span class="sec-t">Transición a continuo</span><span class="sec-b b3">Sem 11–15</span></div>
+    <p class="sec-s">Aquí estaba el error grave del plan anterior. Ahora el paso de intervalos a trote continuo se hace en tres escalones, no en uno.</p>
+    <div class="wks">
+      <div class="w">
+        <div class="w-l">SEM 11–12<small>14–27 dic</small></div>
+        <div><div class="w-s"><span class="tag t-int">Intervalos</span>5' caminar → 2× (8' trote / 1' caminar) → 5' caminar</div><div class="w-d">~28 min · Última semana con pausas</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:27%;background:var(--lime)"></div></div><div class="bl">28 min</div></div>
+      </div>
+      <div class="w mile">
+        <div class="w-l">SEM 13<small>28 dic – 3 ene</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>12 min</b> sin parar</div><div class="w-d">~24 min total · ~1.2 km · Primera vez sin caminar 🏁 <b style="color:var(--lime)">(semana puente nueva)</b></div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:23%;background:var(--ice)"></div></div><div class="bl">24 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 14<small>4–10 ene</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>15 min</b></div><div class="w-d">~27 min total · ~1.5 km <b style="color:var(--lime)">(semana puente nueva)</b></div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:26%;background:var(--ice)"></div></div><div class="bl">27 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 15<small>11–17 ene</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>20 min</b></div><div class="w-d">~32 min total · ~2 km corridos</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:31%;background:var(--ice)"></div></div><div class="bl">32 min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FASE 4 -->
+  <section class="sec rv d5">
+    <div class="sec-h"><span class="sec-n">FASE 04</span><span class="sec-t">Camino a los 5K</span><span class="sec-b b4">Sem 16–20</span></div>
+    <p class="sec-s">Incrementos de 5 minutos, nunca más. Cada semana suma poco pero se acumula rápido.</p>
+    <div class="wks">
+      <div class="w">
+        <div class="w-l">SEM 16<small>18–24 ene</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>25 min</b></div><div class="w-d">~37 min total · ~2.5 km</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:36%;background:var(--ice)"></div></div><div class="bl">37 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 17<small>25–31 ene</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>30 min</b></div><div class="w-d">~42 min total · ~3 km</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:41%;background:var(--ice)"></div></div><div class="bl">42 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 18<small>1–7 feb</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>35 min</b></div><div class="w-d">~47 min total · ~3.5 km</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:46%;background:var(--ice)"></div></div><div class="bl">47 min</div></div>
+      </div>
+      <div class="w">
+        <div class="w-l">SEM 19<small>8–14 feb</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>42 min</b></div><div class="w-d">~54 min total · ~4.2 km · Ya casi</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:53%;background:var(--ice)"></div></div><div class="bl">54 min</div></div>
+      </div>
+      <div class="w mile">
+        <div class="w-l">SEM 20<small>15–21 feb</small></div>
+        <div><div class="w-s"><span class="tag t-con">Continuo</span>Trote continuo <b>50 min</b> — <b style="color:var(--lime)">5 KM</b></div><div class="w-d">~60 min total · Meta cumplida 🎯</div></div>
+        <div class="bar"><div class="bt"><div class="bf" style="width:100%;background:var(--lime)"></div></div><div class="bl">60 min</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="goal rv d6">
+    <div class="k">Objetivo · 15 de febrero de 2027</div>
+    <h3>5 KILÓMETROS</h3>
+    <p>A un ritmo cómodo de ~10'00"/km. Cuatro meses más tarde que el plan original, pero con la base de fuerza que hace la diferencia entre llegar y lesionarte.</p>
+    <div class="gstats">
+      <div class="gs"><div class="n">20</div><div class="l">Semanas</div></div>
+      <div class="gs"><div class="n">60</div><div class="l">Sesiones</div></div>
+      <div class="gs"><div class="n">3</div><div class="l">Días/sem</div></div>
+      <div class="gs"><div class="n">+2</div><div class="l">Semanas puente</div></div>
+    </div>
+  </div>
+
+  <div class="rules rv d6">
+    <div class="r"><div class="r-i">📏</div><div class="r-t">Regla del 10%</div><div class="r-x">Ningún salto de esta v2 supera el 10-15% de volumen semanal. Por eso hay 20 semanas y no 19.</div></div>
+    <div class="r"><div class="r-i">💬</div><div class="r-t">Ritmo conversación</div><div class="r-x">Si no puedes hablar mientras corres, vas rápido. El ritmo mejora solo; forzarlo solo trae lesiones.</div></div>
+    <div class="r"><div class="r-i">🌡️</div><div class="r-t">Ventaja de octubre</div><div class="r-x">Arrancar en otoño en Chihuahua es mucho mejor que en agosto. Nada de correr a 35°C.</div></div>
+    <div class="r"><div class="r-i">💪</div><div class="r-t">La fuerza no para</div><div class="r-x">Mantén 2 días de fuerza durante todo el plan. Es lo que protege tus rodillas mientras suben los kilómetros.</div></div>
+    <div class="r"><div class="r-i">🔁</div><div class="r-t">Repetir es válido</div><div class="r-x">Si una semana te cuesta, repítela antes de avanzar. Retrasar dos semanas es mejor que parar dos meses.</div></div>
+    <div class="r"><div class="r-i">⌚</div><div class="r-t">Apple Watch</div><div class="r-x">Crea un entreno personalizado por fase. Warmup 5' → Repeat → Cooldown 5'. Ya sabes cómo.</div></div>
+  </div>
+
+</div>
+</body>
+</html>

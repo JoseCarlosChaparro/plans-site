@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movilidad & Flexibilidad — Runners</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Spectral:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --cream: #ede8dc;
+    --dark: #1a1612;
+    --brown: #3d2b1f;
+    --accent: #c17f3a;
+    --accent2: #7a9e7e;
+    --muted: #8a7d6e;
+    --border: #d4c9b5;
+    --card: #ffffff;
+    --pre: #e8f0e9;
+    --post: #fef3e2;
+    --rest: #e8edf5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--dark);
+    font-family: 'Spectral', Georgia, serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* Texture overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeIn 0.7s ease both;
+  }
+
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    font-family: 'Spectral', serif;
+    font-weight: 400;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(38px, 8vw, 64px);
+    line-height: 1.05;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+    font-style: italic;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--border); }
+  .divider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* Section tabs */
+  .section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .section-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-family: 'Spectral', serif;
+  }
+
+  .tag-pre { background: var(--pre); color: #3a6b40; }
+  .tag-post { background: var(--post); color: #a0600a; }
+  .tag-rest { background: var(--rest); color: #3a5080; }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--dark);
+  }
+
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: auto;
+    font-style: italic;
+  }
+
+  /* Exercise cards */
+  .exercises {
+    display: grid;
+    gap: 12px;
+  }
+
+  .ex-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+    transition: box-shadow 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .ex-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    transform: translateY(-1px);
+  }
+
+  .ex-left {}
+
+  .ex-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--dark);
+    margin-bottom: 5px;
+  }
+
+  .ex-name-en {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 8px;
+    font-family: 'Spectral', serif;
+  }
+
+  .ex-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .ex-zone {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    background: rgba(122,158,126,0.12);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-family: 'Spectral', serif;
+  }
+
+  .ex-right {
+    text-align: right;
+    min-width: 80px;
+  }
+
+  .ex-time {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .ex-time-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 3px;
+    font-family: 'Spectral', serif;
+  }
+
+  .ex-reps {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* Total time badge */
+  .total-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .total-badge strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--dark);
+    font-weight: 700;
+  }
+
+  /* Tips box */
+  .tips-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 22px 24px;
+    margin-top: 48px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .tips-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--brown);
+  }
+
+  .tips-list {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+
+  .tips-list li {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .tips-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* Schedule summary */
+  .schedule {
+    margin-top: 48px;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .schedule-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: var(--dark);
+  }
+
+  .schedule-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 13px;
+  }
+
+  .schedule-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--dark);
+  }
+
+  .schedule-activity {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .schedule-activity span {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .ex-card { grid-template-columns: 1fr; }
+    .ex-right { text-align: left; display: flex; align-items: center; gap: 10px; }
+    .schedule-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-eyebrow">Rutina complementaria</div>
+    <h1>Movilidad<br>& <em>Flexibilidad</em></h1>
+    <p class="header-desc">Ejercicios específicos para runners principiantes. Previenen lesiones, mejoran la zancada y aceleran la recuperación.</p>
+  </div>
+
+  <!-- PRE-RUN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag tag-pre">Antes de correr</span>
+      <span class="section-title">Movilidad dinámica</span>
+      <span class="section-subtitle">~8 min</span>
+    </div>
+    <div class="exercises">
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Círculos de cadera</div>
+          <div class="ex-name-en">Hip circles</div>
+          <div class="ex-desc">De pie, manos en la cintura. Dibuja círculos grandes con la cadera, primero en un sentido, luego en el otro. Activa la articulación antes del impacto.</div>
+          <div class="ex-zone">Cadera</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">10</div>
+          <div class="ex-time-label">por lado</div>
+          <div class="ex-reps">2 series</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Rodillas al pecho caminando</div>
+          <div class="ex-name-en">Walking knee hugs</div>
+          <div class="ex-desc">Avanza levantando una rodilla al pecho con cada paso, abrazándola brevemente. Alterna piernas. Activa glúteos y flexores de cadera.</div>
+          <div class="ex-zone">Cadera · Glúteos</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">20</div>
+          <div class="ex-time-label">pasos</div>
+          <div class="ex-reps">2 series</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Tijeras de pierna lateral</div>
+          <div class="ex-name-en">Leg swings (lateral)</div>
+          <div class="ex-desc">Apóyate en una pared. Balancea la pierna de lado a lado como un péndulo, aumentando el rango progresivamente. Calienta la cadera sin forzar.</div>
+          <div class="ex-zone">Cadera · Aductores</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">15</div>
+          <div class="ex-time-label">por pierna</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Tijeras de pierna frontal</div>
+          <div class="ex-name-en">Leg swings (front-back)</div>
+          <div class="ex-desc">Mismo ejercicio pero balanceando la pierna hacia adelante y atrás. Imita el movimiento de la zancada al correr.</div>
+          <div class="ex-zone">Isquiotibiales · Cadera</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">15</div>
+          <div class="ex-time-label">por pierna</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Talones al glúteo caminando</div>
+          <div class="ex-name-en">Walking heel to glute</div>
+          <div class="ex-desc">Avanza llevando el talón al glúteo con cada paso, sujetándolo con la mano. Estira el cuádriceps de forma dinámica.</div>
+          <div class="ex-zone">Cuádriceps</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">20</div>
+          <div class="ex-time-label">pasos</div>
+          <div class="ex-reps">2 series</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Rotación de tobillos</div>
+          <div class="ex-name-en">Ankle circles</div>
+          <div class="ex-desc">De pie en una pierna, dibuja círculos con el pie levantado. Lubrica los tobillos antes del impacto repetitivo al correr.</div>
+          <div class="ex-zone">Tobillo</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">10</div>
+          <div class="ex-time-label">por lado</div>
+          <div class="ex-reps">2 sentidos</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="total-badge">Total pre-run: <strong>~8 min</strong></div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+
+  <!-- POST-RUN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag tag-post">Después de correr</span>
+      <span class="section-title">Flexibilidad estática</span>
+      <span class="section-subtitle">~10 min</span>
+    </div>
+    <div class="exercises">
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Estiramiento de gemelo</div>
+          <div class="ex-name-en">Calf stretch</div>
+          <div class="ex-desc">Apoya las manos en la pared, pie trasero estirado con el talón en el suelo. Mantén la posición sin rebotar. Fundamental para evitar fascitis plantar.</div>
+          <div class="ex-zone">Gemelo · Sóleo</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">30"</div>
+          <div class="ex-time-label">por pierna</div>
+          <div class="ex-reps">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Estiramiento de cuádriceps</div>
+          <div class="ex-name-en">Standing quad stretch</div>
+          <div class="ex-desc">De pie, dobla la rodilla y lleva el talón al glúteo sujetando el pie. Mantén las rodillas juntas y el cuerpo erguido. Si pierdes el equilibrio, apóyate en la pared.</div>
+          <div class="ex-zone">Cuádriceps</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">30"</div>
+          <div class="ex-time-label">por pierna</div>
+          <div class="ex-reps">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Estiramiento de isquiotibial</div>
+          <div class="ex-name-en">Seated hamstring stretch</div>
+          <div class="ex-desc">Sentado en el suelo, piernas extendidas. Inclínate hacia adelante desde la cadera (no desde la espalda) intentando tocar los pies. La parte posterior de las piernas debe notar la tensión.</div>
+          <div class="ex-zone">Isquiotibiales</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">40"</div>
+          <div class="ex-time-label">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Estocada baja (flexor cadera)</div>
+          <div class="ex-name-en">Low lunge / hip flexor stretch</div>
+          <div class="ex-desc">Una rodilla en el suelo, la otra al frente en 90°. Empuja las caderas hacia adelante suavemente. Los flexores de cadera se acortan mucho al correr y al estar sentado.</div>
+          <div class="ex-zone">Flexores de cadera</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">40"</div>
+          <div class="ex-time-label">por lado</div>
+          <div class="ex-reps">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Figura 4 (piriforme)</div>
+          <div class="ex-name-en">Figure-4 glute stretch</div>
+          <div class="ex-desc">Tumbado boca arriba, cruza el tobillo sobre la rodilla contraria. Abraza el muslo de abajo y acércalo al pecho. Notarás el estiramiento en el glúteo de la pierna cruzada.</div>
+          <div class="ex-zone">Glúteo · Piriforme</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">40"</div>
+          <div class="ex-time-label">por lado</div>
+          <div class="ex-reps">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Torsión espinal tumbado</div>
+          <div class="ex-name-en">Supine spinal twist</div>
+          <div class="ex-desc">Tumbado boca arriba, lleva una rodilla doblada al lado contrario mientras extiendes el brazo opuesto. Relaja los hombros en el suelo. Descarga la columna después del impacto.</div>
+          <div class="ex-zone">Columna · Cadera</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">30"</div>
+          <div class="ex-time-label">por lado</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="total-badge">Total post-run: <strong>~10 min</strong></div>
+  </div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+
+  <!-- DÍAS DE DESCANSO -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-tag tag-rest">Días de descanso</span>
+      <span class="section-title">Movilidad profunda</span>
+      <span class="section-subtitle">~12 min</span>
+    </div>
+    <div class="exercises">
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Paloma (yoga)</div>
+          <div class="ex-name-en">Pigeon pose</div>
+          <div class="ex-desc">Desde cuatro patas, lleva una rodilla hacia la mano del mismo lado y baja la cadera. Es el estiramiento de cadera más completo que existe para runners. Puede ser intenso al principio.</div>
+          <div class="ex-zone">Cadera · Glúteo profundo</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">60"</div>
+          <div class="ex-time-label">por lado</div>
+          <div class="ex-reps">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Mariposa</div>
+          <div class="ex-name-en">Butterfly stretch</div>
+          <div class="ex-desc">Sentado, junta las plantas de los pies e inclínate suavemente hacia adelante. Abre los aductores (parte interna del muslo), zona que el running no trabaja pero que necesita flexibilidad.</div>
+          <div class="ex-zone">Aductores · Cadera</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">60"</div>
+          <div class="ex-time-label">2 veces</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Gato-vaca</div>
+          <div class="ex-name-en">Cat-cow</div>
+          <div class="ex-desc">A cuatro patas, alterna arquer y redondear la espalda lentamente sincronizando con la respiración. Moviliza toda la columna y libera tensión lumbar acumulada.</div>
+          <div class="ex-zone">Columna · Lumbar</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">10</div>
+          <div class="ex-time-label">repeticiones</div>
+          <div class="ex-reps">lentas</div>
+        </div>
+      </div>
+
+      <div class="ex-card">
+        <div class="ex-left">
+          <div class="ex-name">Rodillas al pecho tumbado</div>
+          <div class="ex-name-en">Knees to chest</div>
+          <div class="ex-desc">Tumbado boca arriba, abraza ambas rodillas al pecho y mece suavemente de lado a lado. Alivia la tensión lumbar y da un masaje a la zona baja de la espalda.</div>
+          <div class="ex-zone">Lumbar · Glúteos</div>
+        </div>
+        <div class="ex-right">
+          <div class="ex-time">60"</div>
+          <div class="ex-time-label">suave</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="total-badge">Total días libres: <strong>~12 min</strong></div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="schedule">
+    <div class="schedule-title">Cómo encajarlo en tu semana</div>
+    <div class="schedule-grid">
+      <div class="schedule-row">
+        <div class="schedule-day">Lunes</div>
+        <div class="schedule-activity"><span>8 min movilidad dinámica</span> → Running → <span>10 min estiramientos</span></div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Martes</div>
+        <div class="schedule-activity">Caminata libre · <span>12 min movilidad profunda</span> (opcional)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Miércoles</div>
+        <div class="schedule-activity"><span>8 min movilidad dinámica</span> → Running → <span>10 min estiramientos</span></div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Jueves</div>
+        <div class="schedule-activity">Caminata libre · <span>12 min movilidad profunda</span> (opcional)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Viernes</div>
+        <div class="schedule-activity"><span>8 min movilidad dinámica</span> → Running → <span>10 min estiramientos</span></div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Sábado</div>
+        <div class="schedule-activity">Caminata libre · <span>12 min movilidad profunda</span> (opcional)</div>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-day">Domingo</div>
+        <div class="schedule-activity">Descanso total 😴</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-box">
+    <div class="tips-title">Reglas de oro</div>
+    <ul class="tips-list">
+      <li>Los estiramientos estáticos (post-run) nunca antes de correr — enfrían el músculo y aumentan el riesgo de lesión.</li>
+      <li>Nunca llegues al dolor. Tensión sí, dolor no. Si duele, reduce el rango.</li>
+      <li>Mantén la respiración durante los estiramientos, nunca la contengas.</li>
+      <li>La movilidad dinámica pre-run es obligatoria. Los estiramientos post-run son casi obligatorios. La rutina de días libres es opcional pero muy recomendable.</li>
+      <li>Los resultados de flexibilidad tardan 4-6 semanas en notarse. Consistencia > intensidad.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
