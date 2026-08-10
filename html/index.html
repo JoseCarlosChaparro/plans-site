@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/theme.css">
+<link rel="stylesheet" href="./assets/theme.css?v=2">
 <script>
   /* Set the theme before first paint so dark mode never flashes white. */
   (function(){
@@ -207,6 +207,21 @@
     font-size: 14.5px;
   }
 
+  /* Fallback list shown when theme.js never arrives */
+  .card-fallback {
+    display: block;
+    padding: 22px 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-fallback:hover { border-color: var(--primary); color: var(--primary); }
+
   @media (max-width: 600px) {
     .hero { padding: 48px 0 40px; }
     .grid { grid-template-columns: 1fr; }
@@ -227,9 +242,12 @@
       <b>Última revisión: 9 de agosto de 2026.</b>
     </p>
     <div class="stats">
-      <div class="stat"><div class="n gradient-text" data-count="4">0</div><div class="l">Documentos</div></div>
-      <div class="stat"><div class="n gradient-text" data-count="28">0</div><div class="l">Semanas planeadas</div></div>
-      <div class="stat"><div class="n gradient-text" data-count="87">0</div><div class="l">Sesiones totales</div></div>
+      <!-- Final values are in the markup, not zeros: the counter animation
+           overwrites them anyway, and this way the numbers are still right
+           if the script never runs. -->
+      <div class="stat"><div class="n gradient-text" data-count="4">4</div><div class="l">Documentos</div></div>
+      <div class="stat"><div class="n gradient-text" data-count="28">28</div><div class="l">Semanas planeadas</div></div>
+      <div class="stat"><div class="n gradient-text" data-count="87">87</div><div class="l">Sesiones totales</div></div>
     </div>
   </section>
 
@@ -241,7 +259,16 @@
     <button class="f" data-filter="futuro">Programado</button>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <!-- Rendered from the catalogue in theme.js. These links are the fallback:
+       if that file fails to load the page still lists every plan instead of
+       going blank. renderCards() replaces them. -->
+  <div class="grid" id="grid">
+    <noscript class="empty">Activá JavaScript para ver la galería completa.</noscript>
+    <a class="card-fallback" href="./plan-fuerza-jose.html">Fuerza sin equipo</a>
+    <a class="card-fallback" href="./plan-alimenticio-jose.html">Come bien, come simple</a>
+    <a class="card-fallback" href="./movilidad-runners.html">Movilidad &amp; flexibilidad</a>
+    <a class="card-fallback" href="./running-roadmap-v2.html">De cero a 5K · v2</a>
+  </div>
 
 </main>
 
@@ -252,7 +279,7 @@
   </div>
 </footer>
 
-<script src="./assets/theme.js"></script>
+<script src="./assets/theme.js?v=2"></script>
 <script>
 (function () {
   'use strict';
@@ -265,6 +292,10 @@
   };
 
   var grid = document.getElementById('grid');
+
+  /* No catalogue means theme.js never arrived. Leave the fallback links in
+     place rather than throwing and wiping the page. */
+  if (!window.PlansTheme || !window.PlansTheme.plans) { return; }
 
   /* Cards come from the shared catalogue in theme.js, so a new plan is
      declared once and appears both here and in the header nav. */

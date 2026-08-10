@@ -42,7 +42,8 @@ volver a `websecure` + `letsencrypt`.
 - **Túnel:** Public Hostname `plans.josechaparro.com` → `http://localhost:80`
 - **Caché:** no hace falta ninguna regla. Todos los HTML salen con
   `Cache-Control: no-cache, must-revalidate`, que Cloudflare respeta. Los
-  estáticos (`css/js/woff2/png/jpg/svg/webp`) sí van con `expires 30d`.
+  estáticos (`css/js/woff2/png/jpg/svg/webp`) van con `max-age=30d, immutable`
+  y se versionan por query (`?v=N`).
 
 > El apex `josechaparro.com` tiene una Redirect Rule a `www` que corre en el
 > edge **antes** del routing del túnel. Por eso esto vive en subdominio y no en
@@ -72,8 +73,9 @@ curl -sI https://plans.josechaparro.com/plan-fuerza-jose.html | head -1
 ```
 
 Los HTML salen con `no-cache`, así que el cambio se ve al instante sin purgar
-Cloudflare. Los estáticos (`assets/*`) sí van con `max-age=30d`: si tocás
-`theme.css` o `theme.js`, purgá esa URL en Cloudflare o probá con `?v=2`.
+Cloudflare. Los estáticos (`assets/*`) van con `max-age=30d, immutable`, así que
+**si tocás `theme.css` o `theme.js` hay que subir el `?v=N`** en las cinco páginas
+— si no, los visitantes con caché siguen con la versión vieja hasta 30 días.
 
 ### Por qué la imagen se construye y no se montan volúmenes
 
@@ -122,7 +124,7 @@ se declara una vez y aparece en los dos.
 ```
 
 3. Al HTML nuevo pegale la cabecera compartida (fuente Inter, `theme.css`, el
-   snippet anti-flash) y `<script src="./assets/theme.js"></script>` antes de
+   snippet anti-flash) y `<script src="./assets/theme.js?v=N"></script>` antes de
    `</body>`. Copiá esas líneas de cualquier plan existente.
 
 ### `tags` — controla los filtros
@@ -190,8 +192,8 @@ parpadee en blanco.
 
 ```bash
 # ¿El contenedor está arriba y en la red correcta?
-ssh dokploy 'docker compose -p plans ps'
-ssh dokploy 'docker inspect plans-plans-1 --format "{{range \$n,\$v := .NetworkSettings.Networks}}{{\$n}}{{end}}"'
+ssh dokploy 'docker ps --filter name=plans-spa'
+ssh dokploy 'docker inspect plans-spa-xmu5sd-plans-1 --format "{{range \$n,\$v := .NetworkSettings.Networks}}{{\$n}}{{end}}"'
 
 # ¿Traefik ve el router?
 ssh dokploy 'docker exec dokploy-traefik wget -qO- http://127.0.0.1:8080/api/http/routers/plans@docker'
@@ -200,7 +202,7 @@ ssh dokploy 'docker exec dokploy-traefik wget -qO- http://127.0.0.1:8080/api/htt
 ssh dokploy 'curl -sI -H "Host: plans.josechaparro.com" http://127.0.0.1/'
 
 # Logs de nginx
-ssh dokploy 'docker compose -p plans logs -f'
+ssh dokploy 'docker logs -f plans-spa-xmu5sd-plans-1'
 ```
 
 Si el origin responde 200 pero el dominio público no, el problema está en
