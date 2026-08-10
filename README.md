@@ -13,8 +13,9 @@ es la fuente Inter desde Google Fonts; todo lo demás es local.
 | Pieza | Valor real |
 |---|---|
 | Servidor | `dokploy` → `192.168.3.143` (Ubuntu 26.04), user `jose` |
-| Ruta del stack | `/home/jose/stacks/plans` |
-| Contenedor | `plans-plans-1` (`nginx:alpine`) |
+| Gestión | Dokploy, servicio tipo Compose, desde este repo (`main`) |
+| Ruta del stack | `/etc/dokploy/compose/plans-spa-xmu5sd/code` |
+| Contenedor | `plans-spa-xmu5sd-plans-1` (imagen propia sobre `nginx:alpine`) |
 | Red Docker | `dokploy-network` (overlay swarm, `attachable=true`) |
 | Reverse proxy | `dokploy-traefik` (`traefik:v3.6.7`) |
 | Entrypoint | `web` (:80) |
@@ -35,13 +36,6 @@ mismo patrón que ya usaba `vault.josechaparro.com`.
 Si algún día el server queda expuesto directo a internet, ahí sí conviene
 volver a `websecure` + `letsencrypt`.
 
-### Por qué el stack vive fuera de `/etc/dokploy`
-
-`/etc/dokploy/compose/` lo gestiona Dokploy desde su UI (cada proyecto lleva
-sufijo aleatorio). Este stack es manual, así que vive en `~/stacks/plans` para
-que Dokploy no lo pise ni lo adopte a medias. Bonus: no hace falta `sudo`
-(el user `jose` está en el grupo `docker`).
-
 ### Cloudflare
 
 - **DNS:** `plans` → CNAME al túnel `jose-home` (proxied, nube naranja)
@@ -59,13 +53,17 @@ que Dokploy no lo pise ni lo adopte a medias. Bonus: no hace falta `sudo`
 
 ## Actualizar un plan
 
-Reemplazá el HTML y sincronizá. **No hace falta reiniciar nada**: el directorio
-`html/` está montado como volumen, nginx lee del disco en cada request y el
-`no-cache` evita que quede pegado en el navegador o en Cloudflare.
+Reemplazá el HTML, commiteá y pusheá. Dokploy reconstruye la imagen y recrea el
+contenedor.
 
 ```bash
-rsync -az --delete plans-site/ dokploy:stacks/plans/
+git add html/plan-fuerza-jose.html
+git commit -m "docs(fuerza): actualizar semana 3"
+git push
 ```
+
+Si tenés el webhook configurado, el deploy arranca solo. Si no, dale **Redeploy**
+en la UI de Dokploy.
 
 Verificá:
 
@@ -73,11 +71,29 @@ Verificá:
 curl -sI https://plans.josechaparro.com/plan-fuerza-jose.html | head -1
 ```
 
-Solo necesitás `docker compose` si tocaste `docker-compose.yml` o `nginx.conf`:
+Los HTML salen con `no-cache`, así que el cambio se ve al instante sin purgar
+Cloudflare. Los estáticos (`assets/*`) sí van con `max-age=30d`: si tocás
+`theme.css` o `theme.js`, purgá esa URL en Cloudflare o probá con `?v=2`.
+
+### Por qué la imagen se construye y no se montan volúmenes
+
+Dokploy **borra y re-clona** su directorio `code/` en cada deploy, así que
+`code/html` estrena inode. Un contenedor ya corriendo mantiene el bind mount
+apuntando al directorio viejo, que ya no existe: sirve una raíz vacía y nginx
+responde `403 directory index is forbidden`. Y `docker compose up -d` no lo
+recrea, porque el compose no cambió.
+
+Copiar los archivos dentro de la imagen (`Dockerfile`) evita todo eso: cada
+deploy construye una imagen nueva, y eso fuerza un contenedor nuevo.
+
+Diagnóstico rápido si vuelve a aparecer un 403:
 
 ```bash
-ssh dokploy 'cd ~/stacks/plans && docker compose -p plans up -d'
+ssh dokploy 'stat -c "disco=%i" /etc/dokploy/compose/<servicio>/code/html'
+ssh dokploy 'docker exec <contenedor> stat -c "cont=%i" /usr/share/nginx/html'
 ```
+
+Si los inodes no coinciden, es esto. Se arregla recreando el contenedor.
 
 ## Añadir un plan nuevo a la galería
 
